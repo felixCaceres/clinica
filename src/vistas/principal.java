@@ -31,17 +31,14 @@ import modelo.Usuario;
 
 /**
  *
- * @author MEC
- * Habilitar las siguientes funciones
- *  habilitar campos: 
- *      tiene que fijarse que pestaña esta seleccionada y habilitar todos los campos de esa pestaña
- *  deshabilitar campos:
- *      tiene que fijarse que pestaña esta seleccionada y deshabilitar todos los campos de esa pestaña
- *  terminar de implementar el btnSave para todas las pestañas
- *  terminar de implementar el btnNuevo para todas las pestañas
- * ====================================================
- * falta un ejemplo de como editar un objeto y luego implementar en todas las pestañas
- * 
+ * @author MEC Habilitar las siguientes funciones habilitar campos: tiene que
+ * fijarse que pestaña esta seleccionada y habilitar todos los campos de esa
+ * pestaña deshabilitar campos: tiene que fijarse que pestaña esta seleccionada
+ * y deshabilitar todos los campos de esa pestaña terminar de implementar el
+ * btnSave para todas las pestañas terminar de implementar el btnNuevo para
+ * todas las pestañas ==================================================== falta
+ * un ejemplo de como editar un objeto y luego implementar en todas las pestañas
+ *
  */
 public class principal extends javax.swing.JFrame {
 
@@ -227,7 +224,7 @@ public class principal extends javax.swing.JFrame {
         jtAPP = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jtCirugia = new javax.swing.JTextField();
-        jcTrnasfuciones = new javax.swing.JCheckBox();
+        jcTransfuciones = new javax.swing.JCheckBox();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtAntecedente = new javax.swing.JTextArea();
@@ -274,11 +271,11 @@ public class principal extends javax.swing.JFrame {
         calendarfecha = new com.toedter.calendar.JDateChooser();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
-        jtHora = new javax.swing.JTextField();
         btnguardar = new javax.swing.JButton();
         jbCancelaragenda = new javax.swing.JButton();
         jbEditaragenda = new javax.swing.JButton();
         jbSaliragenda = new javax.swing.JButton();
+        jcHora = new javax.swing.JComboBox();
         jpUsuarios = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaUsuario = new javax.swing.JTable();
@@ -464,8 +461,13 @@ public class principal extends javax.swing.JFrame {
         panelFichaMedica.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
         panelFichaMedica.add(jtCirugia, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 110, -1));
 
-        jcTrnasfuciones.setText("Tiene Transfuciones?");
-        panelFichaMedica.add(jcTrnasfuciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+        jcTransfuciones.setText("Tiene Transfuciones?");
+        jcTransfuciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcTransfucionesActionPerformed(evt);
+            }
+        });
+        panelFichaMedica.add(jcTransfuciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
         jLabel11.setText("Antecedente Familiar:");
         panelFichaMedica.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
@@ -598,7 +600,6 @@ public class principal extends javax.swing.JFrame {
 
         jLabel22.setText("Hora:");
         jpAgenda.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
-        jpAgenda.add(jtHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 120, -1));
 
         btnguardar.setText("Guardar");
         btnguardar.addActionListener(new java.awt.event.ActionListener() {
@@ -616,6 +617,9 @@ public class principal extends javax.swing.JFrame {
 
         jbSaliragenda.setText("Salir");
         jpAgenda.add(jbSaliragenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 200, -1, -1));
+
+        jcHora.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jpAgenda.add(jcHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 140, -1));
 
         jTabbedPane1.addTab("Agenda", jpAgenda);
 
@@ -847,15 +851,15 @@ public class principal extends javax.swing.JFrame {
             em.getTransaction().begin();
             em.persist(fichaMedica);
             em.getTransaction().commit();
-           
+
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
             System.out.println("btnGuardarAGENDA> ");
-           // cargarVistaAGENDA();
+            // cargarVistaAGENDA();
             em.getTransaction().begin();
             em.persist(agenda);
             em.getTransaction().commit();
-            
+
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_PACIENTE) {
             System.out.println("btnGuardarPACIENTE> ");
@@ -863,7 +867,23 @@ public class principal extends javax.swing.JFrame {
             em.getTransaction().begin();
             em.persist(paciente);
             em.getTransaction().commit();
-            
+
+        }
+        if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
+            System.out.println("btnGuardarSEGUIMIENTO> ");
+            //cargarVistaSeguimiento();
+            em.getTransaction().begin();
+            em.persist(agenda);
+            em.getTransaction().commit();
+
+        }
+        if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
+            System.out.println("btnGuardarESTUDIOS> ");
+            //cargarVistaEstudios();
+            em.getTransaction().begin();
+            em.persist(agenda);
+            em.getTransaction().commit();
+
         }
         limpiarCampos();
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -872,6 +892,10 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         limpiarCampos();
     }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void jcTransfucionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcTransfucionesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcTransfucionesActionPerformed
     /**
      * Busca un paciente en la tabla Pacinetes, de acuerdo a lo que esta
      * seleccionado en la grilla si nada no esta seleccionado retorna null
@@ -1004,10 +1028,11 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JButton jbSalirfichamedica;
     private javax.swing.JButton jbSalirseguimiento;
     private javax.swing.JCheckBox jcFrecuencia;
+    private javax.swing.JComboBox jcHora;
     private javax.swing.JCheckBox jcPresion;
     private javax.swing.JCheckBox jcSat;
     private javax.swing.JCheckBox jcTemperatura;
-    private javax.swing.JCheckBox jcTrnasfuciones;
+    private javax.swing.JCheckBox jcTransfuciones;
     private javax.swing.JPanel jpAgenda;
     private javax.swing.JPanel jpConsulta;
     private javax.swing.JPanel jpEstudios;
@@ -1020,7 +1045,6 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JTextField jtCirugia;
     private javax.swing.JTextField jtEstudios;
     private javax.swing.JTextField jtExamen;
-    private javax.swing.JTextField jtHora;
     private javax.swing.JTextField jtImpresion;
     private javax.swing.JTextField jtMotivoconsulta;
     private javax.swing.JTextField jtPaciente;
@@ -1059,8 +1083,34 @@ public class principal extends javax.swing.JFrame {
             paciente = new Paciente();
             //tfDocument
         }
+        if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
+            jtAPP.setText("");
+            jtCirugia.setText("");
+            jcTransfuciones.setSelected(false);
+            cbTieneAlergia.setSelected(false);
+            jtAlergias.setText("");
+            jtAntecedente.setText("");
+            jtMotivoconsulta.setText("");
+            jtAea.setText("");
+            jcPresion.setSelected(false);
+            jcFrecuencia.setSelected(false);
+            jcSat.setSelected(false);
+            jcTemperatura.setSelected(false);
+            jtExamen.setText("");
+            jtEstudios.setText("");
+            jtImpresion.setText("");
+            jtTratamiento.setText("");
+        }
+        if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
+            jtSeguimiento.setText("");
+        }
         if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
             tfEstudiosAnexos.setText("");
+        }
+        if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
+            jtPaciente.setText("");
+            calendarfecha.setDate(new Date());
+            jcHora.setSelectedIndex(0);
         }
 
     }
