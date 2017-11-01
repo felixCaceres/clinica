@@ -5,18 +5,12 @@
  */
 package vistas;
 
-import com.sun.istack.internal.logging.Logger;
-import com.toedter.calendar.JCalendar;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;

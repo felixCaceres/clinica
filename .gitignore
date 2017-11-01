@@ -3,3 +3,5 @@
 /src/META-INF/persistence.xml
 /mysql-connector-java-5.1.42-bin.jar
 /nbproject/
+/build/
+/dist/
