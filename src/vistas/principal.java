@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import java.awt.Frame;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import javax.persistence.EntityManager;
+import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
@@ -115,8 +117,15 @@ public class principal extends javax.swing.JFrame {
     }
 
     private void cargarVistaAFichaMedica() {
-        fichaMedica.setDescalergia(jtAlergias.getText());
+        fichaMedica.setApp(jtAPP.getText());
+        fichaMedica.setCirugiaprevia(jtCirugia.getText());
+        fichaMedica.setTransfucion(jcTransfuciones.isSelected());
         fichaMedica.setAlergias(cbTieneAlergia.isSelected());
+        fichaMedica.setDescalergia(jtAlergias.getText());
+        fichaMedica.setAntecefamiliar(jtAntecedente.getText());
+        fichaMedica.setMotivoconsulta(jtMotivoconsulta.getText());
+        fichaMedica.setAntecenfernedad(jtAea.getText());
+        
     }
 
     /**
@@ -205,15 +214,10 @@ public class principal extends javax.swing.JFrame {
         tfEdad = new javax.swing.JTextField();
         tfTel = new javax.swing.JTextField();
         tfCel = new javax.swing.JTextField();
-        btnNuevoPaciente = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         calFechaNacimiento = new com.toedter.calendar.JDateChooser();
         panelFichaMedica = new javax.swing.JPanel();
         jtAlergias = new javax.swing.JTextField();
         cbTieneAlergia = new javax.swing.JCheckBox();
-        btnGuardarFichaMedica = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jtAPP = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -239,36 +243,20 @@ public class principal extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jtTratamiento = new javax.swing.JTextArea();
-        jbGuardar = new javax.swing.JButton();
-        jbCancelarfichamedica = new javax.swing.JButton();
-        jbSalirfichamedica = new javax.swing.JButton();
-        jbEditarfichamedica = new javax.swing.JButton();
         jPSeguimiento = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jtSeguimiento = new javax.swing.JTextArea();
-        jbGuardarseguimiento = new javax.swing.JButton();
-        jbCancelarseguimiento = new javax.swing.JButton();
-        jbSalirseguimiento = new javax.swing.JButton();
-        jbEditarseguimiento = new javax.swing.JButton();
         jpEstudios = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tfEstudiosAnexos = new javax.swing.JTextArea();
-        jButton6 = new javax.swing.JButton();
-        jbCancelarestudios = new javax.swing.JButton();
-        jbSalirestudios = new javax.swing.JButton();
-        jbEditarestudios = new javax.swing.JButton();
         jpAgenda = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jtPaciente = new javax.swing.JTextField();
         calendarfecha = new com.toedter.calendar.JDateChooser();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
-        btnguardar = new javax.swing.JButton();
-        jbCancelaragenda = new javax.swing.JButton();
-        jbEditaragenda = new javax.swing.JButton();
-        jbSaliragenda = new javax.swing.JButton();
         jcHora = new javax.swing.JComboBox();
         jpUsuarios = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -385,40 +373,26 @@ public class principal extends javax.swing.JFrame {
 
         jLabel9.setText("Celular");
         jpPaciente.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, -1, -1));
+
+        tfDocumento.setEditable(false);
         jpPaciente.add(tfDocumento, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 230, -1));
+
+        tfNombre.setEditable(false);
         jpPaciente.add(tfNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, 230, -1));
+
+        tfApellido.setEditable(false);
         jpPaciente.add(tfApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 220, -1));
+
+        tfEdad.setEditable(false);
         jpPaciente.add(tfEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, 80, -1));
+
+        tfTel.setEditable(false);
         jpPaciente.add(tfTel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 240, -1));
+
+        tfCel.setEditable(false);
         jpPaciente.add(tfCel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 280, 240, -1));
 
-        btnNuevoPaciente.setText("Nuevo");
-        btnNuevoPaciente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoPacienteActionPerformed(evt);
-            }
-        });
-        jpPaciente.add(btnNuevoPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, -1, -1));
-
-        jButton2.setText("Guardar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jpPaciente.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, -1, -1));
-
-        jButton3.setText("Cancelar");
-        jpPaciente.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, -1, -1));
-
-        jButton4.setText("Salir");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jpPaciente.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 320, -1, -1));
-
+        calFechaNacimiento.setEnabled(false);
         calFechaNacimiento.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 calFechaNacimientoFocusLost(evt);
@@ -438,14 +412,6 @@ public class principal extends javax.swing.JFrame {
             }
         });
         panelFichaMedica.add(cbTieneAlergia, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, -1, -1));
-
-        btnGuardarFichaMedica.setText("Guardar");
-        btnGuardarFichaMedica.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarFichaMedicaActionPerformed(evt);
-            }
-        });
-        panelFichaMedica.add(btnGuardarFichaMedica, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, -1, -1));
 
         jLabel2.setText("APP");
         panelFichaMedica.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 70, 20));
@@ -513,23 +479,6 @@ public class principal extends javax.swing.JFrame {
 
         panelFichaMedica.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, 340, 30));
 
-        jbGuardar.setText("Guardar");
-        panelFichaMedica.add(jbGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, -1, -1));
-
-        jbCancelarfichamedica.setText("Cancelar");
-        panelFichaMedica.add(jbCancelarfichamedica, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, -1, -1));
-
-        jbSalirfichamedica.setText("Salir");
-        jbSalirfichamedica.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbSalirfichamedicaActionPerformed(evt);
-            }
-        });
-        panelFichaMedica.add(jbSalirfichamedica, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 350, -1, -1));
-
-        jbEditarfichamedica.setText("Editar");
-        panelFichaMedica.add(jbEditarfichamedica, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 350, -1, -1));
-
         jTabbedPane1.addTab("Ficha Medica", panelFichaMedica);
 
         jPSeguimiento.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -543,18 +492,6 @@ public class principal extends javax.swing.JFrame {
 
         jPSeguimiento.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, 350, 60));
 
-        jbGuardarseguimiento.setText("Guardar");
-        jPSeguimiento.add(jbGuardarseguimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 200, -1, -1));
-
-        jbCancelarseguimiento.setText("Cancelar");
-        jPSeguimiento.add(jbCancelarseguimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, -1, -1));
-
-        jbSalirseguimiento.setText("Salir");
-        jPSeguimiento.add(jbSalirseguimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 200, -1, -1));
-
-        jbEditarseguimiento.setText("Editar");
-        jPSeguimiento.add(jbEditarseguimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 200, -1, -1));
-
         jTabbedPane1.addTab("Seguimiento", jPSeguimiento);
 
         jpEstudios.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -567,18 +504,6 @@ public class principal extends javax.swing.JFrame {
         jScrollPane6.setViewportView(tfEstudiosAnexos);
 
         jpEstudios.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 40, 360, -1));
-
-        jButton6.setText("Guardar");
-        jpEstudios.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, -1, -1));
-
-        jbCancelarestudios.setText("Cancelar");
-        jpEstudios.add(jbCancelarestudios, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 200, -1, -1));
-
-        jbSalirestudios.setText("Salir");
-        jpEstudios.add(jbSalirestudios, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 200, -1, -1));
-
-        jbEditarestudios.setText("Editar");
-        jpEstudios.add(jbEditarestudios, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 200, -1, -1));
 
         jTabbedPane1.addTab("Estudios", jpEstudios);
 
@@ -594,23 +519,6 @@ public class principal extends javax.swing.JFrame {
 
         jLabel22.setText("Hora:");
         jpAgenda.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
-
-        btnguardar.setText("Guardar");
-        btnguardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnguardarActionPerformed(evt);
-            }
-        });
-        jpAgenda.add(btnguardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
-
-        jbCancelaragenda.setText("Cancelar");
-        jpAgenda.add(jbCancelaragenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 200, -1, -1));
-
-        jbEditaragenda.setText("Editar");
-        jpAgenda.add(jbEditaragenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 200, -1, -1));
-
-        jbSaliragenda.setText("Salir");
-        jpAgenda.add(jbSaliragenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 200, -1, -1));
 
         jcHora.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jpAgenda.add(jcHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 140, -1));
@@ -664,10 +572,20 @@ public class principal extends javax.swing.JFrame {
         });
 
         btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("CANCELAR");
 
         btnSalir.setText("SALIR");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Archivo");
         jMenuBar1.add(jMenu1);
@@ -712,19 +630,6 @@ public class principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbSalirfichamedicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirfichamedicaActionPerformed
-
-    }//GEN-LAST:event_jbSalirfichamedicaActionPerformed
-
-    private void btnGuardarFichaMedicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarFichaMedicaActionPerformed
-        // TODO add your handling code here:
-        System.out.println("btnGuardarFichaMedica> ");
-        cargarVistaAFichaMedica();
-        em.getTransaction().begin();
-        em.persist(fichaMedica);
-        em.getTransaction().commit();
-    }//GEN-LAST:event_btnGuardarFichaMedicaActionPerformed
-
     private void cbTieneAlergiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTieneAlergiaActionPerformed
         // TODO add your handling code here:
 
@@ -742,30 +647,6 @@ public class principal extends javax.swing.JFrame {
 
         String resultado = ("Tienes: " + periodo.getYears() + "Años ");
     }//GEN-LAST:event_calFechaNacimientoFocusLost
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void btnNuevoPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoPacienteActionPerformed
-        // TODO add your handling code here:
-
-        //Cuando este el boton se presiona guardar los datos de usuario en la bbdd
-        //Mostrar errores en caso que los hubieran
-        //On este metodo se pasa de un String a un Entero, puede generar un error
-        //        cuando el string no es una representacion de un numero
-        //Primero guardar todos los TEXTFIELD en usuario
-        em.getTransaction().begin();
-        em.persist(paciente);
-        em.getTransaction().commit();
-
-        //Limpiar los campos
-        limpiarCampos();
-
-        cargarDatosPacientes();
-
-        //guardar el usuario con el entityManager
-    }//GEN-LAST:event_btnNuevoPacienteActionPerformed
 
     private void btnVerPacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPacActionPerformed
         // TODO add your handling code here:
@@ -793,10 +674,6 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tablaPacienteMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void btnAgendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendarActionPerformed
         // TODO add your handling code here:
 
@@ -812,30 +689,6 @@ public class principal extends javax.swing.JFrame {
 
         jTabbedPane1.setSelectedIndex(TAB_AGENDA);
     }//GEN-LAST:event_btnAgendarActionPerformed
-
-    private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
-        // TODO add your handling code here:
-        agenda.setPaciente(paciente);
-//        agenda.setFecha(tfFecha.getDate());
-        //convertir el combo a hora
-//        SimpleDateFormat formatoDeFecha = new SimpleDateFormat(FORMATO_HORA);
-//        Date horaSeleccionada;
-//        try{
-//            horaSeleccionada = formatoDeFecha.parse(cbxHora.getSelectedItem().toString());
-//            agenda.setHora(horaSeleccionada);
-//        } catch (ParseException ex) {
-//            Logger.getLogger(AgendaView.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        em.getTransaction().begin();
-        em.persist(agenda);
-        em.getTransaction().commit();
-        //produce que se sincronicen los datos con la bbdd
-
-        //limpiar los datos
-        agenda = new Agenda();
-//        updateFecha();
-
-    }//GEN-LAST:event_btnguardarActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
@@ -861,6 +714,7 @@ public class principal extends javax.swing.JFrame {
             em.getTransaction().begin();
             em.persist(paciente);
             em.getTransaction().commit();
+            cargarDatosPacientes();
 
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
@@ -880,6 +734,7 @@ public class principal extends javax.swing.JFrame {
 
         }
         limpiarCampos();
+        habilitarCampos(false);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -890,6 +745,30 @@ public class principal extends javax.swing.JFrame {
     private void jcTransfucionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcTransfucionesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jcTransfucionesActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        habilitarCampos(true);
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+
+        Object[] options = {"Aceptar",
+            "Cancelar"};
+        int n = JOptionPane.showOptionDialog(new Frame(),
+                "Quisiera Salir del Sistema ",
+                "Salir del Sistema",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+        if (n == 0) {
+            System.exit(0);
+        }
+
+    }//GEN-LAST:event_btnSalirActionPerformed
     /**
      * Busca un paciente en la tabla Pacinetes, de acuerdo a lo que esta
      * seleccionado en la grilla si nada no esta seleccionado retorna null
@@ -960,20 +839,13 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JButton btnAgendar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnGuardarFichaMedica;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JButton btnNuevoPaciente;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnVerPac;
-    private javax.swing.JButton btnguardar;
     private com.toedter.calendar.JDateChooser calFechaNacimiento;
     private com.toedter.calendar.JDateChooser calendarfecha;
     private javax.swing.JCheckBox cbTieneAlergia;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1007,20 +879,6 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JButton jbCancelaragenda;
-    private javax.swing.JButton jbCancelarestudios;
-    private javax.swing.JButton jbCancelarfichamedica;
-    private javax.swing.JButton jbCancelarseguimiento;
-    private javax.swing.JButton jbEditaragenda;
-    private javax.swing.JButton jbEditarestudios;
-    private javax.swing.JButton jbEditarfichamedica;
-    private javax.swing.JButton jbEditarseguimiento;
-    private javax.swing.JButton jbGuardar;
-    private javax.swing.JButton jbGuardarseguimiento;
-    private javax.swing.JButton jbSaliragenda;
-    private javax.swing.JButton jbSalirestudios;
-    private javax.swing.JButton jbSalirfichamedica;
-    private javax.swing.JButton jbSalirseguimiento;
     private javax.swing.JCheckBox jcFrecuencia;
     private javax.swing.JComboBox jcHora;
     private javax.swing.JCheckBox jcPresion;
@@ -1194,6 +1052,19 @@ public class principal extends javax.swing.JFrame {
         paciente.setTel(tfTel.getText());
         paciente.setCel(tfCel.getText());
 
+    }
+
+    private void habilitarCampos(boolean estado) {
+        if (jTabbedPane1.getSelectedIndex() == TAB_PACIENTE) {
+            tfDocumento.setEditable(estado);
+            tfNombre.setEditable(estado);
+            tfApellido.setEditable(estado);
+            calFechaNacimiento.setEnabled(estado);
+            tfEdad.setEditable(estado);
+            tfTel.setEditable(estado);
+            tfCel.setEditable(estado);
+
+        }
     }
 
 }
