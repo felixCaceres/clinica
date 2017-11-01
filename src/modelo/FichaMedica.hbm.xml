@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-jun-2017 11:41:30 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="modelo.FichaMedica" table="ficha_medica" catalog="clinica" optimistic-lock="version">
+        <id name="idapp" type="java.lang.Integer">
+            <column name="idapp" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="paciente" class="modelo.Paciente" fetch="select">
+            <column name="paciente_id" not-null="true" />
+        </many-to-one>
+        <property name="app" type="string" >
+            <column name="app" />
+        </property>
+        <property name="cirugiaprevia" type="string">
+            <column name="cirugiaprevia" />
+        </property>
+        <property name="transfucion" type="java.lang.Boolean">
+            <column name="transfucion" />
+        </property>
+        <property name="alergias" type="java.lang.Boolean">
+            <column name="alergias" />
+        </property>
+        <property name="descalergia" type="string">
+            <column name="descalergia" />
+        </property>
+        <property name="antecefamiliar" type="string">
+            <column name="antecefamiliar" />
+        </property>
+        <property name="motivoconsulta" type="string">
+            <column name="motivoconsulta" />
+        </property>
+        <property name="antecenfernedad" type="string">
+            <column name="antecenfernedad" />
+        </property>
+        <property name="examenfisico" type="string">
+            <column name="examenfisico" />
+        </property>
+        <property name="efpa" type="string">
+            <column name="efpa" length="45" />
+        </property>
+        <property name="efsat" type="string">
+            <column name="efsat" length="45" />
+        </property>
+        <property name="effc" type="string">
+            <column name="effc" length="45" />
+        </property>
+        <property name="eftemp" type="string">
+            <column name="eftemp" length="45" />
+        </property>
+        <property name="estudiosolicitado" type="string">
+            <column name="estudiosolicitado" length="45" />
+        </property>
+        <property name="imprediagnostico" type="string">
+            <column name="imprediagnostico" />
+        </property>
+        <property name="tratamiento" type="string">
+            <column name="tratamiento" />
+        </property>
+    </class>
+</hibernate-mapping>

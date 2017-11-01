@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-jun-2017 11:41:30 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="modelo.Seguimiento" table="seguimiento" catalog="clinica" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="paciente" class="modelo.Paciente" fetch="select">
+            <column name="paciente_id" not-null="true" />
+        </many-to-one>
+        <property name="seguimiento" type="string">
+            <column name="seguimiento" />
+        </property>
+    </class>
+</hibernate-mapping>
