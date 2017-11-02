@@ -403,6 +403,8 @@ public class principal extends javax.swing.JFrame {
         jTabbedPane1.addTab("Pacientes", jpPaciente);
 
         panelFichaMedica.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jtAlergias.setEditable(false);
         panelFichaMedica.add(jtAlergias, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 80, 204, -1));
 
         cbTieneAlergia.setText("Tiene Alergias?");
@@ -415,10 +417,14 @@ public class principal extends javax.swing.JFrame {
 
         jLabel2.setText("APP");
         panelFichaMedica.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 70, 20));
+
+        jtAPP.setEditable(false);
         panelFichaMedica.add(jtAPP, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 20, 90, -1));
 
         jLabel10.setText("Cirugías Previas:");
         panelFichaMedica.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
+
+        jtCirugia.setEditable(false);
         panelFichaMedica.add(jtCirugia, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 110, -1));
 
         jcTransfuciones.setText("Tiene Transfuciones?");
@@ -432,6 +438,7 @@ public class principal extends javax.swing.JFrame {
         jLabel11.setText("Antecedente Familiar:");
         panelFichaMedica.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
 
+        jtAntecedente.setEditable(false);
         jtAntecedente.setColumns(20);
         jtAntecedente.setRows(5);
         jScrollPane3.setViewportView(jtAntecedente);
@@ -440,10 +447,14 @@ public class principal extends javax.swing.JFrame {
 
         jLabel12.setText("Motivo de la Consulta:");
         panelFichaMedica.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
+
+        jtMotivoconsulta.setEditable(false);
         panelFichaMedica.add(jtMotivoconsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 150, 260, -1));
 
         jLabel13.setText("A.E.A.:");
         panelFichaMedica.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, -1, -1));
+
+        jtAea.setEditable(false);
         panelFichaMedica.add(jtAea, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, 320, -1));
 
         jLabel14.setText("Exámen Físico:");
@@ -460,19 +471,26 @@ public class principal extends javax.swing.JFrame {
 
         jcTemperatura.setText("Temp.");
         panelFichaMedica.add(jcTemperatura, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 210, -1, -1));
+
+        jtExamen.setEditable(false);
         panelFichaMedica.add(jtExamen, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 210, 130, -1));
 
         jLabel15.setText("Estudios Solicitados:");
         panelFichaMedica.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, -1, -1));
+
+        jtEstudios.setEditable(false);
         panelFichaMedica.add(jtEstudios, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 240, -1));
 
         jLabel16.setText("Impresión Diagnostica:");
         panelFichaMedica.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, -1, -1));
+
+        jtImpresion.setEditable(false);
         panelFichaMedica.add(jtImpresion, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 240, -1));
 
         jLabel17.setText("Tratamiento:");
         panelFichaMedica.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, -1, -1));
 
+        jtTratamiento.setEditable(false);
         jtTratamiento.setColumns(20);
         jtTratamiento.setRows(5);
         jScrollPane4.setViewportView(jtTratamiento);
@@ -486,6 +504,7 @@ public class principal extends javax.swing.JFrame {
         jLabel18.setText("Seguimiento:");
         jPSeguimiento.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(56, 51, -1, -1));
 
+        jtSeguimiento.setEditable(false);
         jtSeguimiento.setColumns(20);
         jtSeguimiento.setRows(5);
         jScrollPane5.setViewportView(jtSeguimiento);
@@ -499,6 +518,7 @@ public class principal extends javax.swing.JFrame {
         jLabel19.setText("Estudios Anexos:");
         jpEstudios.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 49, -1, -1));
 
+        tfEstudiosAnexos.setEditable(false);
         tfEstudiosAnexos.setColumns(20);
         tfEstudiosAnexos.setRows(5);
         jScrollPane6.setViewportView(tfEstudiosAnexos);
@@ -579,6 +599,11 @@ public class principal extends javax.swing.JFrame {
         });
 
         btnCancelar.setText("CANCELAR");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnSalir.setText("SALIR");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -639,13 +664,8 @@ public class principal extends javax.swing.JFrame {
 
     private void calFechaNacimientoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_calFechaNacimientoFocusLost
         // TODO add your handling code here:
-        DateTimeFormatter date = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate fechadenacimiento = LocalDate.parse(calFechaNacimiento.getDateFormatString(), date);
-        LocalDate fechaactual = LocalDate.now();
-
-        Period periodo = Period.between(fechadenacimiento, fechaactual);
-
-        String resultado = ("Tienes: " + periodo.getYears() + "Años ");
+        
+        calcularEdad();
     }//GEN-LAST:event_calFechaNacimientoFocusLost
 
     private void btnVerPacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPacActionPerformed
@@ -757,7 +777,7 @@ public class principal extends javax.swing.JFrame {
         Object[] options = {"Aceptar",
             "Cancelar"};
         int n = JOptionPane.showOptionDialog(new Frame(),
-                "Quisiera Salir del Sistema ",
+                "Salir del Sistema ",
                 "Salir del Sistema",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -767,8 +787,14 @@ public class principal extends javax.swing.JFrame {
         if (n == 0) {
             System.exit(0);
         }
+        calcularEdad();
 
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        habilitarCampos(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
     /**
      * Busca un paciente en la tabla Pacinetes, de acuerdo a lo que esta
      * seleccionado en la grilla si nada no esta seleccionado retorna null
@@ -1065,6 +1091,47 @@ public class principal extends javax.swing.JFrame {
             tfCel.setEditable(estado);
 
         }
+         if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
+             jtAPP.setEditable(estado);
+            jtCirugia.setEditable(estado);
+            jcTransfuciones.setSelected(true);
+            cbTieneAlergia.setSelected(true);
+            jtAlergias.setEditable(estado);
+            jtAntecedente.setEditable(estado);
+            jtMotivoconsulta.setEditable(estado);
+            jtAea.setEditable(estado);
+            jcPresion.setSelected(true);
+            jcFrecuencia.setSelected(true);
+            jcSat.setSelected(true);
+            jcTemperatura.setSelected(true);
+            jtExamen.setEditable(estado);
+            jtEstudios.setEditable(estado);
+            jtImpresion.setEditable(estado);
+            jtTratamiento.setEditable(estado);
+         }
+         if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
+            jtSeguimiento.setEditable(estado);
+        }
+        if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
+            tfEstudiosAnexos.setEditable(estado);
+        }
+        if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
+            jtPaciente.setEditable(estado);
+            calendarfecha.setDate(new Date());
+            jcHora.setSelectedIndex(0);
+        }
+    }
+
+    private void calcularEdad() {
+        
+        DateTimeFormatter date = DateTimeFormatter.ISO_LOCAL_DATE;
+        LocalDate fechadenacimiento = LocalDate.parse(calFechaNacimiento.getDateFormatString(), date);
+        LocalDate fechaactual = LocalDate.now();
+
+        Period periodo = Period.between(fechadenacimiento, fechaactual);
+
+        String resultado = ("Tienes: " + periodo.getYears() + "Años ");
+        System.out.println(resultado);
     }
 
 }
