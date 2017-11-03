@@ -13,8 +13,8 @@ public class FichaMedica  implements java.io.Serializable {
      private Paciente paciente;
      private String app;
      private String cirugiaprevia;
-     private Boolean transfucion;
-     private Boolean alergias;
+     private Boolean transfucion = false;
+     private Boolean alergias = false;
      private String descalergia;
      private String antecefamiliar;
      private String motivoconsulta;

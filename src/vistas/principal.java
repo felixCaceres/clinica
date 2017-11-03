@@ -96,7 +96,7 @@ public class principal extends javax.swing.JFrame {
                         return;
                     }
                     paciente = getSelectedPaciente();
-                    cargarFichaMedica(paciente.getId());
+                    cargarFichaMedicaAVista();
 
                     //
                 }
@@ -117,6 +117,7 @@ public class principal extends javax.swing.JFrame {
     }
 
     private void cargarVistaAFichaMedica() {
+        
         fichaMedica.setApp(jtAPP.getText());
         fichaMedica.setCirugiaprevia(jtCirugia.getText());
         fichaMedica.setTransfucion(jcTransfuciones.isSelected());
@@ -125,6 +126,14 @@ public class principal extends javax.swing.JFrame {
         fichaMedica.setAntecefamiliar(jtAntecedente.getText());
         fichaMedica.setMotivoconsulta(jtMotivoconsulta.getText());
         fichaMedica.setAntecenfernedad(jtAea.getText());
+        //Agregado por Marcelo
+        fichaMedica.setEfpa(Boolean.toString(jcPresion.isSelected()));
+        fichaMedica.setEffc(Boolean.toString(jcFrecuencia.isSelected()));
+        fichaMedica.setEfsat(Boolean.toString(jcSat.isSelected()));
+        fichaMedica.setEftemp(Boolean.toString(jcTemperatura.isSelected()));
+        fichaMedica.setEstudiosolicitado(jtEstudios.getText());
+        fichaMedica.setImprediagnostico(jtImpresion.getText());
+        fichaMedica.setTratamiento(jtTratamiento.getText());
         
     }
 
@@ -136,34 +145,62 @@ public class principal extends javax.swing.JFrame {
      */
     FichaMedica fichaMedica;
 
-    private void cargarFichaMedica(Integer id) {
+    private void cargarFichaMedicaAVista() {
         //To change body of generated methods, choose Tools | Templates.
         System.out.println("Ficha Medica loadFichaMedica> ");
+        //cuando es nuevo y se guarda la ficha tambien, falta refrescar
+        em.refresh(paciente);
         if (paciente.getFichaMedicas().isEmpty()) {
             System.out.println("Crear nueva FichaMedica y agregar Datos al Paciente");
             fichaMedica = new FichaMedica();
             fichaMedica.setPaciente(paciente);
+            //Esto no se lo que hace
             paciente.getEstudioses().add(fichaMedica);
         } else {
+            
             Iterator it = paciente.getFichaMedicas().iterator();
             while (it.hasNext()) {
                 System.out.println("While cargar fichaMedica");
                 fichaMedica = (FichaMedica) it.next();
+                //Como la ficha medica solo "Debe haber una cargamos esa"
+                //y salimos del bucle;
+                break;
             }
-            System.out.println("Ya tiene ficha medica");
+            
 
         }
-
-        if (fichaMedica.getAlergias() != null) {
-
-            cbTieneAlergia.setSelected(fichaMedica.getAlergias());
-            jtAlergias.setVisible(fichaMedica.getAlergias());
-            System.out.println("fichaMedica.getAlergias> " + fichaMedica.getAlergias());
-        } else {
-            jtAlergias.setVisible(false);
-            cbTieneAlergia.setSelected(false);
+        
+        jtAPP.setText                            (fichaMedica.getApp()) ;
+        jtCirugia.setText                        (fichaMedica.getCirugiaprevia());
+        jtAlergias.setText                       (fichaMedica.getDescalergia());
+        jtAntecedente.setText                    (fichaMedica.getAntecefamiliar());
+        jtMotivoconsulta.setText                 (fichaMedica.getMotivoconsulta()) ;
+        jtAea.setText                            ( fichaMedica.getAntecenfernedad() ) ;
+        jtEstudios.setText                       (fichaMedica.getEstudiosolicitado());
+        jtImpresion.setText                      (fichaMedica.getImprediagnostico());
+        jtTratamiento.setText                    (fichaMedica.getTratamiento());
+        jtExamen.setText                         (fichaMedica.getExamenfisico());
+        
+        //Agregado por Marcelo
+        //Es un problema los valores por defecto, ya que los campos asociados a 
+        //algunas variables boolenas son del Tipo String entonces deben estar 
+        //inicializado
+        try {
+            
+            jcTransfuciones.setSelected             (fichaMedica.getTransfucion());
+            cbTieneAlergia.setSelected              (fichaMedica.getAlergias()) ;
+            jcPresion.setSelected                   (Boolean.parseBoolean(fichaMedica.getEfpa()));
+            jcFrecuencia.setSelected                (Boolean.parseBoolean( fichaMedica.getEffc()));
+            jcSat.setSelected                       (Boolean.parseBoolean( fichaMedica.getEfsat()));
+            jcTemperatura.setSelected               (Boolean.parseBoolean( fichaMedica.getEftemp()));
+        } catch (Exception e) {
+            System.out.println("sucedio un error: "+ e.getMessage());
         }
-        jtAlergias.setText(fichaMedica.getDescalergia());
+        
+        //Invalidar la vista para que re renderize
+        jtAlergias.setVisible(cbTieneAlergia.isSelected());
+        panelFichaMedica.revalidate();
+        panelFichaMedica.repaint();
 
     }
 
@@ -245,8 +282,11 @@ public class principal extends javax.swing.JFrame {
         jtTratamiento = new javax.swing.JTextArea();
         jPSeguimiento = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
+        btnAdd = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
         jtSeguimiento = new javax.swing.JTextArea();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jpEstudios = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -464,6 +504,7 @@ public class principal extends javax.swing.JFrame {
         jtAlergias.setEditable(false);
 
         cbTieneAlergia.setText("Tiene Alergias?");
+        cbTieneAlergia.setEnabled(false);
         cbTieneAlergia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbTieneAlergiaActionPerformed(evt);
@@ -479,6 +520,7 @@ public class principal extends javax.swing.JFrame {
         jtCirugia.setEditable(false);
 
         jcTransfuciones.setText("Tiene Transfuciones?");
+        jcTransfuciones.setEnabled(false);
         jcTransfuciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcTransfucionesActionPerformed(evt);
@@ -503,12 +545,16 @@ public class principal extends javax.swing.JFrame {
         jLabel14.setText("Exámen Físico:");
 
         jcPresion.setText("P.A.");
+        jcPresion.setEnabled(false);
 
         jcFrecuencia.setText("F.C.");
+        jcFrecuencia.setEnabled(false);
 
         jcSat.setText("Sat.");
+        jcSat.setEnabled(false);
 
         jcTemperatura.setText("Temp.");
+        jcTemperatura.setEnabled(false);
 
         jtExamen.setEditable(false);
 
@@ -643,29 +689,53 @@ public class principal extends javax.swing.JFrame {
 
         jLabel18.setText("Seguimiento:");
 
-        jtSeguimiento.setEditable(false);
+        btnAdd.setText("Agregar");
+
         jtSeguimiento.setColumns(20);
         jtSeguimiento.setRows(5);
-        jScrollPane5.setViewportView(jtSeguimiento);
+        jScrollPane7.setViewportView(jtSeguimiento);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane8.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPSeguimientoLayout = new javax.swing.GroupLayout(jPSeguimiento);
         jPSeguimiento.setLayout(jPSeguimientoLayout);
         jPSeguimientoLayout.setHorizontalGroup(
             jPSeguimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPSeguimientoLayout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(jLabel18)
-                .addGap(32, 32, 32)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(jPSeguimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPSeguimientoLayout.createSequentialGroup()
+                        .addComponent(jLabel18)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAdd)
+                        .addContainerGap(45, Short.MAX_VALUE))
+                    .addComponent(jScrollPane8)))
         );
         jPSeguimientoLayout.setVerticalGroup(
             jPSeguimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPSeguimientoLayout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(jLabel18))
-            .addGroup(jPSeguimientoLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(jPSeguimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPSeguimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel18)
+                        .addComponent(btnAdd))
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(178, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Seguimiento", jPSeguimiento);
@@ -862,7 +932,8 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         jtAlergias.setVisible(cbTieneAlergia.isSelected());
-        panelFichaMedica.invalidate();
+        panelFichaMedica.revalidate();
+        panelFichaMedica.repaint();
     }//GEN-LAST:event_cbTieneAlergiaActionPerformed
 
     private void calFechaNacimientoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_calFechaNacimientoFocusLost
@@ -917,10 +988,18 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
             System.out.println("btnGuardarFichaMedica> ");
+            if (paciente == null || paciente.getId() == null) {
+                showMensaje("Paciente no seleccionado","Seleccione paciente!!!");
+                return;
+            }
             cargarVistaAFichaMedica();
             em.getTransaction().begin();
             em.persist(fichaMedica);
             em.getTransaction().commit();
+            //para que pueda cargar los datos             
+            //Luego de guardar la ficha refrescamos la tabla
+            cargarDatosPacientes();
+            
 
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
@@ -931,6 +1010,9 @@ public class principal extends javax.swing.JFrame {
             em.getTransaction().commit();
 
         }
+        
+        //Cuando es paciente y se preciona guardar no hace falta limpiar los 
+        //campos
         if (jTabbedPane1.getSelectedIndex() == TAB_PACIENTE) {
             System.out.println("btnGuardarPACIENTE> ");
             cargarVistaAPaciente();
@@ -977,16 +1059,7 @@ public class principal extends javax.swing.JFrame {
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
 
-        Object[] options = {"Aceptar",
-            "Cancelar"};
-        int n = JOptionPane.showOptionDialog(new Frame(),
-                "Salir del Sistema ",
-                "Salir del Sistema",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
+        int n = showMensaje("Salir del sistema", "Desea abandonar el sistema?");
         if (n == 0) {
             System.exit(0);
         }
@@ -1065,6 +1138,7 @@ public class principal extends javax.swing.JFrame {
     private Paciente paciente;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAgendar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
@@ -1105,9 +1179,11 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JCheckBox jcFrecuencia;
     private javax.swing.JComboBox jcHora;
     private javax.swing.JCheckBox jcPresion;
@@ -1148,6 +1224,7 @@ public class principal extends javax.swing.JFrame {
 
         em = HibernateUtil.getSessionFactory().createEntityManager();
         paciente = new Paciente();
+        fichaMedica = new FichaMedica();
         jtAlergias.setVisible(false);
         cargarDatosPacientes();
     }
@@ -1162,25 +1239,28 @@ public class principal extends javax.swing.JFrame {
             tfTel.setText("");
             tfCel.setText("");
             paciente = new Paciente();
+            fichaMedica = new FichaMedica();
             //tfDocument
         }
+        //Para las fichas medicas no hace falta limpiar los campos pues
+        //solo tiene una ficha medica
         if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
-            jtAPP.setText("");
-            jtCirugia.setText("");
-            jcTransfuciones.setSelected(false);
-            cbTieneAlergia.setSelected(false);
-            jtAlergias.setText("");
-            jtAntecedente.setText("");
-            jtMotivoconsulta.setText("");
-            jtAea.setText("");
-            jcPresion.setSelected(false);
-            jcFrecuencia.setSelected(false);
-            jcSat.setSelected(false);
-            jcTemperatura.setSelected(false);
-            jtExamen.setText("");
-            jtEstudios.setText("");
-            jtImpresion.setText("");
-            jtTratamiento.setText("");
+//            jtAPP.setText("");
+//            jtCirugia.setText("");
+//            jcTransfuciones.setSelected(false);
+//            cbTieneAlergia.setSelected(false);
+//            jtAlergias.setText("");
+//            jtAntecedente.setText("");
+//            jtMotivoconsulta.setText("");
+//            jtAea.setText("");
+//            jcPresion.setSelected(false);
+//            jcFrecuencia.setSelected(false);
+//            jcSat.setSelected(false);
+//            jcTemperatura.setSelected(false);
+//            jtExamen.setText("");
+//            jtEstudios.setText("");
+//            jtImpresion.setText("");
+//            jtTratamiento.setText("");
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
             jtSeguimiento.setText("");
@@ -1231,6 +1311,8 @@ public class principal extends javax.swing.JFrame {
 
     /**
      * cargar datos pacientes a la grilla
+     * 
+     * Falta mejorar este codigo, por ahora lo dejamos asi
      */
     List<Paciente> pacientesList;
 
@@ -1294,23 +1376,29 @@ public class principal extends javax.swing.JFrame {
             tfCel.setEditable(estado);
 
         }
+        /*
+        *Primero habilitamos todos los que son textField
+        *Luego todos los que son checkbox
+        */
          if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
-             jtAPP.setEditable(estado);
+            jtAPP.setEditable(estado);
             jtCirugia.setEditable(estado);
-            jcTransfuciones.setSelected(true);
-            cbTieneAlergia.setSelected(true);
             jtAlergias.setEditable(estado);
             jtAntecedente.setEditable(estado);
             jtMotivoconsulta.setEditable(estado);
             jtAea.setEditable(estado);
-            jcPresion.setSelected(true);
-            jcFrecuencia.setSelected(true);
-            jcSat.setSelected(true);
-            jcTemperatura.setSelected(true);
             jtExamen.setEditable(estado);
             jtEstudios.setEditable(estado);
-            jtImpresion.setEditable(estado);
             jtTratamiento.setEditable(estado);
+            jtImpresion.setEditable(estado);
+            
+            //Estaba mal, falta habilitar no setear el valor
+            jcTransfuciones.setEnabled(estado);
+            cbTieneAlergia.setEnabled(estado);
+            jcPresion.setEnabled(estado);
+            jcFrecuencia.setEnabled(estado);
+            jcSat.setEnabled(estado);
+            jcTemperatura.setEnabled(estado);
          }
          if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
             jtSeguimiento.setEditable(estado);
@@ -1335,6 +1423,20 @@ public class principal extends javax.swing.JFrame {
 
         String resultado = ("Tienes: " + periodo.getYears() + "Años ");
         System.out.println(resultado);
+    }
+
+    private int showMensaje(String titulo, String mensaje) {
+        Object[] options = {"Aceptar",
+            "Cancelar"};
+        int n = JOptionPane.showOptionDialog(new Frame(),
+                mensaje,
+                titulo,
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+        return n;
     }
 
 }
