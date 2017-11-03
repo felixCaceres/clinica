@@ -6,6 +6,8 @@
 package vistas;
 
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -46,6 +48,9 @@ public class principal extends javax.swing.JFrame {
     Integer TAB_ESTUDIOS = 4;
     Integer TAB_AGENDA = 5;
     Integer TAB_USUARIOS = 6;
+    
+    //Listener para el menu
+    ActionListener listenerMenu;
 
     /**
      * Creates new form principal
@@ -1227,6 +1232,62 @@ public class principal extends javax.swing.JFrame {
         fichaMedica = new FichaMedica();
         jtAlergias.setVisible(false);
         cargarDatosPacientes();
+        listenerMenu = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                ejecutarMenu(ae);
+            }
+
+            
+        };
+        tablaPaciente.setComponentPopupMenu(new MenuTablaPaciente(listenerMenu));
+    }
+    
+    //Para Implementar los menus de las tablas las acciones que queres que sucedan
+    private void ejecutarMenu(ActionEvent ae) {
+        
+        Paciente modificar = getSelectedPaciente();
+        
+        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Nuevo.name())){
+            
+        }
+        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Editar.name())){
+            
+        }
+        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.FichaMedica.name())){
+            jTabbedPane1.setSelectedIndex(TAB_FICHA_MEDICA);
+        }
+        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Seguimiento.name())){
+            
+        }
+        /*
+        Para borrar se necesita verificar si tiene relaciones en otras tablas
+        por defecto vamos a borrar, luego hay que verificar si devemos bloquear o no ciertas 
+        acciones
+        */
+        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Borrar.name())){
+            if (modificar ==null) {
+                return;
+            }
+            if (!modificar.getFichaMedicas().isEmpty()) {
+                //tiene fichas medicas, entonces borro las fichas
+                deleteAll( modificar.getFichaMedicas().iterator());
+            }
+            if (!modificar.getSeguimientos().isEmpty()) {
+                //Tiene seguimientos entonces debo borrar
+                deleteAll( modificar.getSeguimientos().iterator());
+            
+            }
+            if (!modificar.getEstudioses().isEmpty()) {
+                //Tiene estudios entonces debo borrar
+                deleteAll( modificar.getEstudioses().iterator());
+            }
+            em.getTransaction().begin();
+            em.remove(modificar);
+            em.getTransaction().commit();
+            //se borro todo entonces recargar la tabla
+            cargarDatosPacientes();
+        }
     }
 
     private void limpiarCampos() {
@@ -1315,7 +1376,12 @@ public class principal extends javax.swing.JFrame {
      * Falta mejorar este codigo, por ahora lo dejamos asi
      */
     List<Paciente> pacientesList;
-
+    
+    /**
+     * Cargar la lista de pacientes para actualizar los datos de la tabla
+     * una vez realizada la consulta carga todos los datos a la tabla de 
+     * pacientes
+     */
     private void cargarDatosPacientes() {
 
         if (txtNombre.getText().length() == 0) {
@@ -1437,6 +1503,14 @@ public class principal extends javax.swing.JFrame {
                 options,
                 options[0]);
         return n;
+    }
+    
+    private void deleteAll(Iterator it){
+        while (it.hasNext()) {
+            em.getTransaction().begin();
+            em.remove(it.next());
+            em.getTransaction().commit();
+        }
     }
 
 }
