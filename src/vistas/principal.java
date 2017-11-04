@@ -8,15 +8,12 @@ package vistas;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
@@ -417,6 +414,11 @@ public class principal extends javax.swing.JFrame {
         tfApellido.setEditable(false);
 
         tfEdad.setEditable(false);
+        tfEdad.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tfEdadFocusGained(evt);
+            }
+        });
 
         tfTel.setEditable(false);
 
@@ -526,11 +528,6 @@ public class principal extends javax.swing.JFrame {
 
         jcTransfuciones.setText("Tiene Transfuciones?");
         jcTransfuciones.setEnabled(false);
-        jcTransfuciones.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcTransfucionesActionPerformed(evt);
-            }
-        });
 
         jLabel11.setText("Antecedente Familiar:");
 
@@ -734,9 +731,8 @@ public class principal extends javax.swing.JFrame {
             .addGroup(jPSeguimientoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPSeguimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPSeguimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel18)
-                        .addComponent(btnAdd))
+                    .addComponent(btnAdd)
+                    .addComponent(jLabel18)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -944,7 +940,7 @@ public class principal extends javax.swing.JFrame {
     private void calFechaNacimientoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_calFechaNacimientoFocusLost
         // TODO add your handling code here:
         
-        calcularEdad();
+        tfEdad.setText(calcularEdad());
     }//GEN-LAST:event_calFechaNacimientoFocusLost
 
     private void btnVerPacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPacActionPerformed
@@ -979,13 +975,6 @@ public class principal extends javax.swing.JFrame {
         if (tablaPaciente.getSelectedRow() < 0) {
             return;
         }
-
-        paciente = getSelectedPaciente();
-
-        System.out.println("Obteniendo paciente para agendar: " + paciente);
-
-        cargarAgenda(paciente);
-
         jTabbedPane1.setSelectedIndex(TAB_AGENDA);
     }//GEN-LAST:event_btnAgendarActionPerformed
 
@@ -1050,11 +1039,8 @@ public class principal extends javax.swing.JFrame {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
         limpiarCampos();
+        habilitarCampos(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
-
-    private void jcTransfucionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcTransfucionesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jcTransfucionesActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
@@ -1076,6 +1062,11 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         habilitarCampos(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void tfEdadFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfEdadFocusGained
+        // TODO add your handling code here:
+        tfEdad.setText(calcularEdad());
+    }//GEN-LAST:event_tfEdadFocusGained
     /**
      * Busca un paciente en la tabla Pacinetes, de acuerdo a lo que esta
      * seleccionado en la grilla si nada no esta seleccionado retorna null
@@ -1343,33 +1334,12 @@ public class principal extends javax.swing.JFrame {
         tfApellido.setText(paciente.getApellido());
         calFechaNacimiento.setDate(paciente.getFechanac());
         //Hacer calculo de edad
-        tfEdad.setText("");
+        tfEdad.setText(calcularEdad());
         tfTel.setText(paciente.getTel());
         tfCel.setText(paciente.getCel());
     }
 
-    /**
-     * Verifica un string que cumpla con el formato "dd/MM/yyyy"
-     *
-     * @param aVerificar
-     * @return un date si la fecha es correcta , null en caso contrario
-     */
-    private Date verificarFecha(String aVerificar) {
-
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        Date fecha;
-
-        try {
-
-            fecha = format.parse(aVerificar);
-
-        } catch (ParseException e) {
-            System.out.println(e.toString());
-            fecha = null;
-        }
-        return fecha;
-    }
-
+    
     /**
      * cargar datos pacientes a la grilla
      * 
@@ -1421,10 +1391,7 @@ public class principal extends javax.swing.JFrame {
         paciente.setDocumento(doc);
         paciente.setNombre(tfNombre.getText());
         paciente.setApellido(tfApellido.getText());
-        //Aqui es donde se chequea la fecha
-
-        //Date fecha = verificarFecha(tfFechaNacimiento.getText());
-        //Verificamos del JCalendar
+        
         paciente.setFechanac(calFechaNacimiento.getDate());
         paciente.setTel(tfTel.getText());
         paciente.setCel(tfCel.getText());
@@ -1437,7 +1404,8 @@ public class principal extends javax.swing.JFrame {
             tfNombre.setEditable(estado);
             tfApellido.setEditable(estado);
             calFechaNacimiento.setEnabled(estado);
-            tfEdad.setEditable(estado);
+            //Este campo no es editable
+//            tfEdad.setEditable(estado);
             tfTel.setEditable(estado);
             tfCel.setEditable(estado);
 
@@ -1478,17 +1446,24 @@ public class principal extends javax.swing.JFrame {
             jcHora.setSelectedIndex(0);
         }
     }
+    
+    /**
+     * Metodo para calcular la edad
+     */
+    
 
-    private void calcularEdad() {
+    private String calcularEdad() {
         
-        DateTimeFormatter date = DateTimeFormatter.ISO_LOCAL_DATE;
-        LocalDate fechadenacimiento = LocalDate.parse(calFechaNacimiento.getDateFormatString(), date);
-        LocalDate fechaactual = LocalDate.now();
-
-        Period periodo = Period.between(fechadenacimiento, fechaactual);
-
-        String resultado = ("Tienes: " + periodo.getYears() + "Años ");
-        System.out.println(resultado);
+        LocalDate ahora = LocalDate.now();
+        LocalDate fechaSeleccionada ;
+        long edad  = 0;
+        ZoneId zoneId = ZoneId.systemDefault();
+        fechaSeleccionada = calFechaNacimiento.getCalendar().
+                toInstant().atZone(zoneId).toLocalDate();
+        
+        edad = ChronoUnit.YEARS.between(fechaSeleccionada , ahora);
+        return edad + " años";
+        
     }
 
     private int showMensaje(String titulo, String mensaje) {
