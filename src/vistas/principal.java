@@ -5,12 +5,15 @@
  */
 package vistas;
 
+import framework.EntityTableModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -22,7 +25,9 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Agenda;
 import modelo.FichaMedica;
 import modelo.Paciente;
+import modelo.Seguimiento;
 import modelo.Usuario;
+import util.AppProperties;
 
 /**
  *
@@ -48,6 +53,9 @@ public class principal extends javax.swing.JFrame {
     
     //Listener para el menu
     ActionListener listenerMenu;
+    EntityTableModel<Seguimiento> tableModelSeguimiento;
+    List<Seguimiento> listaSeguimiento = new ArrayList<>();
+    Seguimiento seguimiento = new Seguimiento();
 
     /**
      * Creates new form principal
@@ -112,10 +120,26 @@ public class principal extends javax.swing.JFrame {
                     //Cargar los datos para la agenda
                     cargarAgenda(paciente);
                 }
+                if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
+                    if (tablaPaciente.getSelectedRow() < 0) {
+                        return;
+                    }
+                    paciente = getSelectedPaciente();
+                    //Cargar los datos de los seguimientos
+                    cargarSeguimientos();
+                }
             }
+
 
         });
 
+    }
+    
+    private void cargarSeguimientos() {
+        listaSeguimiento = em.createQuery("From Seguimiento", Seguimiento.class)
+                .getResultList();
+        tableModelSeguimiento.setRows(listaSeguimiento);
+        tableModelSeguimiento.fireTableDataChanged();
     }
 
     private void cargarVistaAFichaMedica() {
@@ -288,7 +312,7 @@ public class principal extends javax.swing.JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         jtSeguimiento = new javax.swing.JTextArea();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblSeguimiento = new javax.swing.JTable();
         jpEstudios = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -692,12 +716,17 @@ public class principal extends javax.swing.JFrame {
         jLabel18.setText("Seguimiento:");
 
         btnAdd.setText("Agregar");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         jtSeguimiento.setColumns(20);
         jtSeguimiento.setRows(5);
         jScrollPane7.setViewportView(jtSeguimiento);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblSeguimiento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -708,7 +737,7 @@ public class principal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane8.setViewportView(jTable1);
+        jScrollPane8.setViewportView(tblSeguimiento);
 
         javax.swing.GroupLayout jPSeguimientoLayout = new javax.swing.GroupLayout(jPSeguimiento);
         jPSeguimiento.setLayout(jPSeguimientoLayout);
@@ -735,8 +764,8 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(jLabel18)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(178, Short.MAX_VALUE))
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Seguimiento", jPSeguimiento);
@@ -983,7 +1012,7 @@ public class principal extends javax.swing.JFrame {
         if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
             System.out.println("btnGuardarFichaMedica> ");
             if (paciente == null || paciente.getId() == null) {
-                showMensaje("Paciente no seleccionado","Seleccione paciente!!!");
+                showMensaje(AppProperties.TITLE_USER_NOT_SELECTED,AppProperties.MSG_USER_NOT_SELECTED);
                 return;
             }
             cargarVistaAFichaMedica();
@@ -1018,10 +1047,8 @@ public class principal extends javax.swing.JFrame {
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
             System.out.println("btnGuardarSEGUIMIENTO> ");
-            //cargarVistaSeguimiento();
-            em.getTransaction().begin();
-            em.persist(agenda);
-            em.getTransaction().commit();
+            cargarVistaASeguimiento();
+            //Este no guardara o si?
 
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
@@ -1067,6 +1094,30 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         tfEdad.setText(calcularEdad());
     }//GEN-LAST:event_tfEdadFocusGained
+
+    /**
+     * Se debe cambiar el nombre de Este boton ya que solo agrega seguimientos
+     * Cuando se presiona este boton, se debe crear un nuevo seguimiento
+     * y guardar en la base de datos, el texto escrito por el usuario y la fecha
+     * 
+     * @param evt 
+     */
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        if (paciente == null || paciente.getId() == null) {
+            showMensaje(AppProperties.TITLE_USER_NOT_SELECTED, AppProperties.MSG_USER_NOT_SELECTED);
+            return;
+        }
+        if (jtSeguimiento.getText().isEmpty()) {
+            showMensaje(AppProperties.TITLE_SEGUIMIENTO_NO_SET, AppProperties.MSG_SEGUIMIENTO_NO_SET);
+            return;
+        
+        }
+        cargarVistaASeguimiento();
+        saveSeguimiento();
+        limpiarCampos();
+        cargarSeguimientos();
+    }//GEN-LAST:event_btnAddActionPerformed
     /**
      * Busca un paciente en la tabla Pacinetes, de acuerdo a lo que esta
      * seleccionado en la grilla si nada no esta seleccionado retorna null
@@ -1179,7 +1230,6 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JCheckBox jcFrecuencia;
     private javax.swing.JComboBox jcHora;
     private javax.swing.JCheckBox jcPresion;
@@ -1206,6 +1256,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JPanel panelFichaMedica;
     private javax.swing.JTable tablaPaciente;
     private javax.swing.JTable tablaUsuario;
+    private javax.swing.JTable tblSeguimiento;
     private javax.swing.JTextField tfApellido;
     private javax.swing.JTextField tfCel;
     private javax.swing.JTextField tfDocumento;
@@ -1231,6 +1282,11 @@ public class principal extends javax.swing.JFrame {
 
             
         };
+        tableModelSeguimiento = new EntityTableModel<>(Seguimiento.class , new ArrayList<>());
+        tableModelSeguimiento.addColumn("Id", "id");
+        tableModelSeguimiento.addColumn("Seguimiento", "seguimiento");
+        tblSeguimiento.setModel(tableModelSeguimiento);
+        tblSeguimiento.setComponentPopupMenu(new MenuTablaSeguimiento(listenerMenu));
         tablaPaciente.setComponentPopupMenu(new MenuTablaPaciente(listenerMenu));
     }
     
@@ -1279,6 +1335,15 @@ public class principal extends javax.swing.JFrame {
             //se borro todo entonces recargar la tabla
             cargarDatosPacientes();
         }
+        
+        //Los menu de la tabla Paciente
+        if (ae.getActionCommand().equals(MenuTablaSeguimiento.MenuSeguimiento.Editar.name())){
+            
+            showMensaje("Implementar", "Implementar");
+        }
+        if (ae.getActionCommand().equals(MenuTablaSeguimiento.MenuSeguimiento.Borrar.name())){
+            showMensaje("Implementar", "Implementar");
+        }
     }
 
     private void limpiarCampos() {
@@ -1316,6 +1381,7 @@ public class principal extends javax.swing.JFrame {
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
             jtSeguimiento.setText("");
+            seguimiento = new Seguimiento();
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
             tfEstudiosAnexos.setText("");
@@ -1486,6 +1552,26 @@ public class principal extends javax.swing.JFrame {
             em.remove(it.next());
             em.getTransaction().commit();
         }
+    }
+
+    /**
+     * Se asignan los datos de la vista seguimiento al objeto seguimiento para 
+     * guardar dicho objeto
+     */
+    private void cargarVistaASeguimiento() {
+        
+        //Un ejemplo interesante seria guardar la fecha del seguimiento
+        SimpleDateFormat  sdf = new SimpleDateFormat(AppProperties.FECHA_DEFAULT_FORMAT);
+        Date fechaSeg = new Date();
+        String fecha = sdf.format(fechaSeg);
+        seguimiento.setPaciente(paciente);
+        seguimiento.setSeguimiento(fecha+": "+jtSeguimiento.getText());
+    }
+
+    private void saveSeguimiento() {
+        em.getTransaction().begin();
+        em.persist(seguimiento);
+        em.getTransaction().commit();
     }
 
 }
