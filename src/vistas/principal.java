@@ -136,7 +136,8 @@ public class principal extends javax.swing.JFrame {
     }
     
     private void cargarSeguimientos() {
-        listaSeguimiento = em.createQuery("From Seguimiento", Seguimiento.class)
+        listaSeguimiento = em.createQuery("From Seguimiento s WHERE s.paciente = :p1", Seguimiento.class)
+                .setParameter("p1", paciente)
                 .getResultList();
         tableModelSeguimiento.setRows(listaSeguimiento);
         tableModelSeguimiento.fireTableDataChanged();
@@ -1119,7 +1120,7 @@ public class principal extends javax.swing.JFrame {
         cargarSeguimientos();
     }//GEN-LAST:event_btnAddActionPerformed
     /**
-     * Busca un paciente en la tabla Pacinetes, de acuerdo a lo que esta
+     * Busca un paciente en la tabla Pacientes, de acuerdo a lo que esta
      * seleccionado en la grilla si nada no esta seleccionado retorna null
      *
      * @return
