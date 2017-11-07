@@ -1187,6 +1187,7 @@ public class principal extends javax.swing.JFrame {
         saveEstudios();
         limpiarCampos();
         cargarEstudios();
+        //
     }//GEN-LAST:event_btnaddEstudiosActionPerformed
     /**
      * Busca un paciente en la tabla Pacientes, de acuerdo a lo que esta
