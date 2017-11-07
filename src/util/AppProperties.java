@@ -18,4 +18,6 @@ public class AppProperties {
     public static String TITLE_USER_NOT_SELECTED = "Paciente no seleccionado" ;
     public static String TITLE_SEGUIMIENTO_NO_SET = "Ingrese Seguimiento" ;
     public static String MSG_SEGUIMIENTO_NO_SET = "Ingrese Seguimiento por favor" ;
+    public static String TITLE_ESTUDIOSANEXOS_NO_SET = "Ingrese un Estudio";
+    public static String MSG_ESTUDIOSANEXOS_NO_SET = "Ingrese un Estudio por favor" ;
 }

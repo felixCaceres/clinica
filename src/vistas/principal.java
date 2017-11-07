@@ -23,6 +23,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import modelo.Agenda;
+import modelo.Estudios;
 import modelo.FichaMedica;
 import modelo.Paciente;
 import modelo.Seguimiento;
@@ -56,6 +57,9 @@ public class principal extends javax.swing.JFrame {
     EntityTableModel<Seguimiento> tableModelSeguimiento;
     List<Seguimiento> listaSeguimiento = new ArrayList<>();
     Seguimiento seguimiento = new Seguimiento();
+    EntityTableModel<Estudios> tableModelEstudios;
+    List<Estudios> listaEstudios = new ArrayList<>();
+    Estudios estudiosanexo = new Estudios();
 
     /**
      * Creates new form principal
@@ -141,6 +145,13 @@ public class principal extends javax.swing.JFrame {
                 .getResultList();
         tableModelSeguimiento.setRows(listaSeguimiento);
         tableModelSeguimiento.fireTableDataChanged();
+    }
+    private void cargarEstudios() {
+        listaEstudios = em.createQuery("From Estudios e WHERE e.paciente = :p1", Estudios.class)
+                .setParameter("p1", paciente)
+                .getResultList();
+        tableModelEstudios.setRows(listaEstudios);
+        tableModelEstudios.fireTableDataChanged();
     }
 
     private void cargarVistaAFichaMedica() {
@@ -318,6 +329,9 @@ public class principal extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tfEstudiosAnexos = new javax.swing.JTextArea();
+        btnaddEstudios = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblEstudios = new javax.swing.JTable();
         jpAgenda = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jtPaciente = new javax.swing.JTextField();
@@ -412,7 +426,7 @@ public class principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnVerPac)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -461,40 +475,43 @@ public class principal extends javax.swing.JFrame {
         jpPacienteLayout.setHorizontalGroup(
             jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(jLabel3)
-                .addGap(16, 16, 16)
-                .addComponent(tfDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jLabel4)
-                .addGap(23, 23, 23)
-                .addComponent(tfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jLabel5)
-                .addGap(23, 23, 23)
-                .addComponent(tfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel6)
-                .addGap(21, 21, 21)
-                .addComponent(calFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(jLabel7)
-                .addGap(26, 26, 26)
-                .addComponent(tfEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(jLabel8)
-                .addGap(28, 28, 28)
-                .addComponent(tfTel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jLabel9)
-                .addGap(27, 27, 27)
-                .addComponent(tfCel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jLabel3)
+                        .addGap(16, 16, 16)
+                        .addComponent(tfDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel4)
+                        .addGap(23, 23, 23)
+                        .addComponent(tfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel5)
+                        .addGap(23, 23, 23)
+                        .addComponent(tfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel6)
+                        .addGap(21, 21, 21)
+                        .addComponent(calFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addComponent(jLabel7)
+                        .addGap(26, 26, 26)
+                        .addComponent(tfEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jLabel8)
+                        .addGap(28, 28, 28)
+                        .addComponent(tfTel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel9)
+                        .addGap(27, 27, 27)
+                        .addComponent(tfCel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(241, 241, 241))
         );
         jpPacienteLayout.setVerticalGroup(
             jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -765,7 +782,7 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(jLabel18)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -778,24 +795,59 @@ public class principal extends javax.swing.JFrame {
         tfEstudiosAnexos.setRows(5);
         jScrollPane6.setViewportView(tfEstudiosAnexos);
 
+        btnaddEstudios.setText("Agregar");
+        btnaddEstudios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnaddEstudiosActionPerformed(evt);
+            }
+        });
+
+        tblEstudios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane5.setViewportView(tblEstudios);
+
         javax.swing.GroupLayout jpEstudiosLayout = new javax.swing.GroupLayout(jpEstudios);
         jpEstudios.setLayout(jpEstudiosLayout);
         jpEstudiosLayout.setHorizontalGroup(
             jpEstudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpEstudiosLayout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jLabel19)
-                .addGap(14, 14, 14)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jpEstudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpEstudiosLayout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(jLabel19)
+                        .addGap(14, 14, 14)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnaddEstudios))
+                    .addGroup(jpEstudiosLayout.createSequentialGroup()
+                        .addGap(82, 82, 82)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jpEstudiosLayout.setVerticalGroup(
             jpEstudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpEstudiosLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(jLabel19))
-            .addGroup(jpEstudiosLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jpEstudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpEstudiosLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(jLabel19))
+                    .addGroup(jpEstudiosLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addGroup(jpEstudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnaddEstudios)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Estudios", jpEstudios);
@@ -876,7 +928,7 @@ public class principal extends javax.swing.JFrame {
             .addGroup(jpUsuariosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(191, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Usuarios", jpUsuarios);
@@ -1119,6 +1171,23 @@ public class principal extends javax.swing.JFrame {
         limpiarCampos();
         cargarSeguimientos();
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnaddEstudiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddEstudiosActionPerformed
+        // TODO add your handling code here:
+        if (paciente == null || paciente.getId() == null) {
+            showMensaje(AppProperties.TITLE_USER_NOT_SELECTED, AppProperties.MSG_USER_NOT_SELECTED);
+            return;
+        }
+        if (tfEstudiosAnexos.getText().isEmpty()) {
+            showMensaje(AppProperties.TITLE_USER_NOT_SELECTED, AppProperties.MSG_ESTUDIOSANEXOS_NO_SET);
+            return;
+        
+        }
+        cargarVistaAEstudios();
+        saveEstudios();
+        limpiarCampos();
+        cargarEstudios();
+    }//GEN-LAST:event_btnaddEstudiosActionPerformed
     /**
      * Busca un paciente en la tabla Pacientes, de acuerdo a lo que esta
      * seleccionado en la grilla si nada no esta seleccionado retorna null
@@ -1194,6 +1263,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnVerPac;
+    private javax.swing.JButton btnaddEstudios;
     private com.toedter.calendar.JDateChooser calFechaNacimiento;
     private com.toedter.calendar.JDateChooser calendarfecha;
     private javax.swing.JCheckBox cbTieneAlergia;
@@ -1227,6 +1297,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
@@ -1257,6 +1328,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JPanel panelFichaMedica;
     private javax.swing.JTable tablaPaciente;
     private javax.swing.JTable tablaUsuario;
+    private javax.swing.JTable tblEstudios;
     private javax.swing.JTable tblSeguimiento;
     private javax.swing.JTextField tfApellido;
     private javax.swing.JTextField tfCel;
@@ -1289,6 +1361,10 @@ public class principal extends javax.swing.JFrame {
         tblSeguimiento.setModel(tableModelSeguimiento);
         tblSeguimiento.setComponentPopupMenu(new MenuTablaSeguimiento(listenerMenu));
         tablaPaciente.setComponentPopupMenu(new MenuTablaPaciente(listenerMenu));
+        tableModelEstudios = new EntityTableModel<>(Estudios.class , new ArrayList<>());
+        tableModelEstudios.addColumn("Id", "id");
+        tableModelEstudios.addColumn("Estudios", "estudios");
+        tblEstudios.setModel(tableModelEstudios);
     }
     
     //Para Implementar los menus de las tablas las acciones que queres que sucedan
@@ -1568,10 +1644,25 @@ public class principal extends javax.swing.JFrame {
         seguimiento.setPaciente(paciente);
         seguimiento.setSeguimiento(fecha+": "+jtSeguimiento.getText());
     }
-
-    private void saveSeguimiento() {
+    
+        private void saveSeguimiento() {
         em.getTransaction().begin();
         em.persist(seguimiento);
+        em.getTransaction().commit();
+    }
+    
+    private void cargarVistaAEstudios() {
+        
+        //Un ejemplo interesante seria guardar la fecha del seguimiento
+        SimpleDateFormat  sdf = new SimpleDateFormat(AppProperties.FECHA_DEFAULT_FORMAT);
+        Date fechaSeg = new Date();
+        String fecha = sdf.format(fechaSeg);
+        estudiosanexo.setPaciente(paciente);
+        estudiosanexo.setEstudios(fecha+": "+tfEstudiosAnexos.getText());
+    }
+    private void saveEstudios() {
+        em.getTransaction().begin();
+        em.persist(tfEstudiosAnexos);
         em.getTransaction().commit();
     }
 
