@@ -1179,7 +1179,7 @@ public class principal extends javax.swing.JFrame {
             return;
         }
         if (tfEstudiosAnexos.getText().isEmpty()) {
-            showMensaje(AppProperties.TITLE_USER_NOT_SELECTED, AppProperties.MSG_ESTUDIOSANEXOS_NO_SET);
+            showMensaje(AppProperties.TITLE_ESTUDIOSANEXOS_NO_SET, AppProperties.MSG_ESTUDIOSANEXOS_NO_SET);
             return;
         
         }
@@ -1663,7 +1663,7 @@ public class principal extends javax.swing.JFrame {
     }
     private void saveEstudios() {
         em.getTransaction().begin();
-        em.persist(tfEstudiosAnexos);
+        em.persist(estudiosanexo);
         em.getTransaction().commit();
     }
 
