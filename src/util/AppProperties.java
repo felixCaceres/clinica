@@ -20,4 +20,15 @@ public class AppProperties {
     public static String MSG_SEGUIMIENTO_NO_SET = "Ingrese Seguimiento por favor" ;
     public static String TITLE_ESTUDIOSANEXOS_NO_SET = "Ingrese un Estudio";
     public static String MSG_ESTUDIOSANEXOS_NO_SET = "Ingrese un Estudio por favor" ;
+    
+    public static String TITLE_ALERT_BORRAR = "Borrar Realmente?" ;
+    public static String MSG_ALERT_BORRAR = "Desea Borrar Realmente?" ;
+    
+    public static String[] HORARIOS_LIBRES = new String[]{"08:00", "09:00", "10:00", "11:00",
+        "12:00", "14:00", "15:00", "16:00",
+        "17:00", "18:00"
+    };
+    public static String FORMATO_HORA = "HH:mm";
+    public static String PROPIEDAD_FECHA = "date";
+    public static int OPCION_BORRRAR = 0;
 }
