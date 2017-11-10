@@ -5,27 +5,35 @@
  */
 package vistas;
 
+import framework.EntityTableModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import modelo.Agenda;
+import modelo.Estudios;
 import modelo.FichaMedica;
 import modelo.Paciente;
+import modelo.Seguimiento;
 import modelo.Usuario;
+import util.AppProperties;
 
 /**
  *
@@ -51,6 +59,25 @@ public class principal extends javax.swing.JFrame {
     
     //Listener para el menu
     ActionListener listenerMenu;
+    EntityTableModel<Seguimiento> tableModelSeguimiento;
+    List<Seguimiento> listaSeguimiento = new ArrayList<>();
+    Seguimiento seguimiento = new Seguimiento();
+    EntityTableModel<Estudios> tableModelEstudios;
+    List<Estudios> listaEstudios = new ArrayList<>();
+    Estudios estudiosanexo = new Estudios();
+    //Elementos necesarios para la agenda
+    Agenda agenda;
+    List<Agenda> listaAgenda = new ArrayList<>();
+    EntityTableModel<Agenda> tableModelAgenda ;
+    List<String> horariosFiltrados;
+    private SimpleDateFormat formatoHora = new SimpleDateFormat(AppProperties.FORMATO_HORA);
+    private SimpleDateFormat formatoFecha = new SimpleDateFormat(AppProperties.FECHA_DEFAULT_FORMAT);
+    
+    EntityManager em;
+    List<Usuario> usuarioList;
+    Usuario user;
+
+    private Paciente paciente;
 
     /**
      * Creates new form principal
@@ -59,6 +86,7 @@ public class principal extends javax.swing.JFrame {
         initComponents();
 
         iniciarComponentes();
+        initTablas();
 
         jTabbedPane1.addChangeListener(new ChangeListener() {
 
@@ -108,17 +136,36 @@ public class principal extends javax.swing.JFrame {
                 //nuevo if con el id de la pestaña agenda
                 //verificar si hay seleccionado un paciente
                 if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
+                    cargarTablaAgenda();
+                }
+                if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
                     if (tablaPaciente.getSelectedRow() < 0) {
                         return;
                     }
                     paciente = getSelectedPaciente();
-                    //Cargar los datos para la agenda
-                    cargarAgenda(paciente);
+                    //Cargar los datos de los seguimientos
+                    cargarSeguimientos();
                 }
             }
 
+
         });
 
+    }
+    
+    private void cargarSeguimientos() {
+        listaSeguimiento = em.createQuery("From Seguimiento s WHERE s.paciente = :p1", Seguimiento.class)
+                .setParameter("p1", paciente)
+                .getResultList();
+        tableModelSeguimiento.setRows(listaSeguimiento);
+        tableModelSeguimiento.fireTableDataChanged();
+    }
+    private void cargarEstudios() {
+        listaEstudios = em.createQuery("From Estudios e WHERE e.paciente = :p1", Estudios.class)
+                .setParameter("p1", paciente)
+                .getResultList();
+        tableModelEstudios.setRows(listaEstudios);
+        tableModelEstudios.fireTableDataChanged();
     }
 
     private void cargarVistaAFichaMedica() {
@@ -212,15 +259,12 @@ public class principal extends javax.swing.JFrame {
     /**
      *
      */
-    Agenda agenda;
+    
 
     private void cargarAgenda(Paciente pac) {
-        agenda = new Agenda();
-        agenda.setPaciente(pac);
-        ;
-
-        agenda.setFecha(new Date());
-
+        
+       
+        jtPaciente.setText(paciente.getNombre()+", "+paciente.getApellido());
         //Vamos a usar la libreria que combierte entre fechas
         //agenda.setHora();
     }
@@ -291,18 +335,23 @@ public class principal extends javax.swing.JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         jtSeguimiento = new javax.swing.JTextArea();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblSeguimiento = new javax.swing.JTable();
         jpEstudios = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tfEstudiosAnexos = new javax.swing.JTextArea();
+        btnaddEstudios = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblEstudios = new javax.swing.JTable();
         jpAgenda = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jtPaciente = new javax.swing.JTextField();
-        calendarfecha = new com.toedter.calendar.JDateChooser();
+        calendarfecha = new com.toedter.calendar.JDateChooser(new Date());
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jcHora = new javax.swing.JComboBox();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        tblAgenda = new javax.swing.JTable();
         jpUsuarios = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaUsuario = new javax.swing.JTable();
@@ -364,20 +413,17 @@ public class principal extends javax.swing.JFrame {
             .addGroup(jpConsultaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
                     .addGroup(jpConsultaLayout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpConsultaLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(36, 36, 36)
                         .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jpConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpConsultaLayout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(btnVerPac))
-                            .addComponent(btnAgendar))
-                        .addGap(43, 43, 43))))
+                        .addGap(18, 18, 18)
+                        .addGroup(jpConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnVerPac, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAgendar, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
+                        .addGap(0, 55, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jpConsultaLayout.setVerticalGroup(
             jpConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -390,7 +436,7 @@ public class principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnVerPac)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -417,6 +463,11 @@ public class principal extends javax.swing.JFrame {
         tfApellido.setEditable(false);
 
         tfEdad.setEditable(false);
+        tfEdad.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tfEdadFocusGained(evt);
+            }
+        });
 
         tfTel.setEditable(false);
 
@@ -434,40 +485,43 @@ public class principal extends javax.swing.JFrame {
         jpPacienteLayout.setHorizontalGroup(
             jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(jLabel3)
-                .addGap(16, 16, 16)
-                .addComponent(tfDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jLabel4)
-                .addGap(23, 23, 23)
-                .addComponent(tfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jLabel5)
-                .addGap(23, 23, 23)
-                .addComponent(tfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel6)
-                .addGap(21, 21, 21)
-                .addComponent(calFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(jLabel7)
-                .addGap(26, 26, 26)
-                .addComponent(tfEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(jLabel8)
-                .addGap(28, 28, 28)
-                .addComponent(tfTel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpPacienteLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jLabel9)
-                .addGap(27, 27, 27)
-                .addComponent(tfCel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jLabel3)
+                        .addGap(16, 16, 16)
+                        .addComponent(tfDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel4)
+                        .addGap(23, 23, 23)
+                        .addComponent(tfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel5)
+                        .addGap(23, 23, 23)
+                        .addComponent(tfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel6)
+                        .addGap(21, 21, 21)
+                        .addComponent(calFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addComponent(jLabel7)
+                        .addGap(26, 26, 26)
+                        .addComponent(tfEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jLabel8)
+                        .addGap(28, 28, 28)
+                        .addComponent(tfTel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpPacienteLayout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel9)
+                        .addGap(27, 27, 27)
+                        .addComponent(tfCel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(241, 241, 241))
         );
         jpPacienteLayout.setVerticalGroup(
             jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -526,11 +580,6 @@ public class principal extends javax.swing.JFrame {
 
         jcTransfuciones.setText("Tiene Transfuciones?");
         jcTransfuciones.setEnabled(false);
-        jcTransfuciones.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcTransfucionesActionPerformed(evt);
-            }
-        });
 
         jLabel11.setText("Antecedente Familiar:");
 
@@ -695,12 +744,17 @@ public class principal extends javax.swing.JFrame {
         jLabel18.setText("Seguimiento:");
 
         btnAdd.setText("Agregar");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         jtSeguimiento.setColumns(20);
         jtSeguimiento.setRows(5);
         jScrollPane7.setViewportView(jtSeguimiento);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblSeguimiento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -711,7 +765,7 @@ public class principal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane8.setViewportView(jTable1);
+        jScrollPane8.setViewportView(tblSeguimiento);
 
         javax.swing.GroupLayout jPSeguimientoLayout = new javax.swing.GroupLayout(jPSeguimiento);
         jPSeguimiento.setLayout(jPSeguimientoLayout);
@@ -720,27 +774,27 @@ public class principal extends javax.swing.JFrame {
             .addGroup(jPSeguimientoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPSeguimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane8)
                     .addGroup(jPSeguimientoLayout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnAdd)
-                        .addContainerGap(45, Short.MAX_VALUE))
-                    .addComponent(jScrollPane8)))
+                        .addGap(0, 35, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPSeguimientoLayout.setVerticalGroup(
             jPSeguimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPSeguimientoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPSeguimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPSeguimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel18)
-                        .addComponent(btnAdd))
+                    .addComponent(btnAdd)
+                    .addComponent(jLabel18)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(178, Short.MAX_VALUE))
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Seguimiento", jPSeguimiento);
@@ -752,73 +806,124 @@ public class principal extends javax.swing.JFrame {
         tfEstudiosAnexos.setRows(5);
         jScrollPane6.setViewportView(tfEstudiosAnexos);
 
+        btnaddEstudios.setText("Agregar");
+        btnaddEstudios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnaddEstudiosActionPerformed(evt);
+            }
+        });
+
+        tblEstudios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane5.setViewportView(tblEstudios);
+
         javax.swing.GroupLayout jpEstudiosLayout = new javax.swing.GroupLayout(jpEstudios);
         jpEstudios.setLayout(jpEstudiosLayout);
         jpEstudiosLayout.setHorizontalGroup(
             jpEstudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpEstudiosLayout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jLabel19)
-                .addGap(14, 14, 14)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(jpEstudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5)
+                    .addGroup(jpEstudiosLayout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnaddEstudios)
+                        .addGap(0, 34, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jpEstudiosLayout.setVerticalGroup(
             jpEstudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpEstudiosLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(jLabel19))
-            .addGroup(jpEstudiosLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(jpEstudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel19)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnaddEstudios))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Estudios", jpEstudios);
 
         jLabel20.setText("Paciente:");
 
+        calendarfecha.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                calendarfechaPropertyChange(evt);
+            }
+        });
+
         jLabel21.setText("Programar Fecha de Consulta:");
 
         jLabel22.setText("Hora:");
 
-        jcHora.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcHora.setModel(new javax.swing.DefaultComboBoxModel(AppProperties.HORARIOS_LIBRES));
+
+        tblAgenda.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane9.setViewportView(tblAgenda);
 
         javax.swing.GroupLayout jpAgendaLayout = new javax.swing.GroupLayout(jpAgenda);
         jpAgenda.setLayout(jpAgendaLayout);
         jpAgendaLayout.setHorizontalGroup(
             jpAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpAgendaLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jLabel20)
-                .addGap(37, 37, 37)
-                .addComponent(jtPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpAgendaLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jLabel21)
-                .addGap(24, 24, 24)
-                .addComponent(calendarfecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jpAgendaLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jLabel22)
-                .addGap(13, 13, 13)
-                .addComponent(jcHora, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(jpAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpAgendaLayout.createSequentialGroup()
+                        .addGroup(jpAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(27, 27, 27)
+                        .addGroup(jpAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jtPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                            .addComponent(calendarfecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jcHora, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jpAgendaLayout.setVerticalGroup(
             jpAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpAgendaLayout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addGroup(jpAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpAgendaLayout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(jLabel20))
-                    .addComponent(jtPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jpAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20))
+                .addGap(18, 18, 18)
+                .addGroup(jpAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(calendarfecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21))
+                .addGap(18, 18, 18)
+                .addGroup(jpAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jcHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22))
                 .addGap(30, 30, 30)
-                .addGroup(jpAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21)
-                    .addComponent(calendarfecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jpAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel22)
-                    .addComponent(jcHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Agenda", jpAgenda);
@@ -850,7 +955,7 @@ public class principal extends javax.swing.JFrame {
             .addGroup(jpUsuariosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(191, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Usuarios", jpUsuarios);
@@ -944,7 +1049,7 @@ public class principal extends javax.swing.JFrame {
     private void calFechaNacimientoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_calFechaNacimientoFocusLost
         // TODO add your handling code here:
         
-        calcularEdad();
+        tfEdad.setText(calcularEdad());
     }//GEN-LAST:event_calFechaNacimientoFocusLost
 
     private void btnVerPacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPacActionPerformed
@@ -979,13 +1084,7 @@ public class principal extends javax.swing.JFrame {
         if (tablaPaciente.getSelectedRow() < 0) {
             return;
         }
-
-        paciente = getSelectedPaciente();
-
-        System.out.println("Obteniendo paciente para agendar: " + paciente);
-
-        cargarAgenda(paciente);
-
+        jtPaciente.setText(paciente.getApellido()+", "+paciente.getNombre());
         jTabbedPane1.setSelectedIndex(TAB_AGENDA);
     }//GEN-LAST:event_btnAgendarActionPerformed
 
@@ -994,13 +1093,13 @@ public class principal extends javax.swing.JFrame {
         if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
             System.out.println("btnGuardarFichaMedica> ");
             if (paciente == null || paciente.getId() == null) {
-                showMensaje("Paciente no seleccionado","Seleccione paciente!!!");
+                showMensaje(AppProperties.TITLE_USER_NOT_SELECTED,AppProperties.MSG_USER_NOT_SELECTED);
                 return;
             }
             cargarVistaAFichaMedica();
-            em.getTransaction().begin();
-            em.persist(fichaMedica);
-            em.getTransaction().commit();
+            
+            guardar(fichaMedica);
+            
             //para que pueda cargar los datos             
             //Luego de guardar la ficha refrescamos la tabla
             cargarDatosPacientes();
@@ -1008,11 +1107,14 @@ public class principal extends javax.swing.JFrame {
 
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
+
             System.out.println("btnGuardarAGENDA> ");
-            // cargarVistaAGENDA();
-            em.getTransaction().begin();
-            em.persist(agenda);
-            em.getTransaction().commit();
+            cargarVistaAgenda();
+
+            guardar(agenda);
+            agenda = new Agenda();
+
+            cargarTablaAgenda();
 
         }
         
@@ -1021,26 +1123,19 @@ public class principal extends javax.swing.JFrame {
         if (jTabbedPane1.getSelectedIndex() == TAB_PACIENTE) {
             System.out.println("btnGuardarPACIENTE> ");
             cargarVistaAPaciente();
-            em.getTransaction().begin();
-            em.persist(paciente);
-            em.getTransaction().commit();
+            
+            guardar(paciente);
             cargarDatosPacientes();
 
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
             System.out.println("btnGuardarSEGUIMIENTO> ");
-            //cargarVistaSeguimiento();
-            em.getTransaction().begin();
-            em.persist(agenda);
-            em.getTransaction().commit();
+            
 
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
             System.out.println("btnGuardarESTUDIOS> ");
-            //cargarVistaEstudios();
-            em.getTransaction().begin();
-            em.persist(agenda);
-            em.getTransaction().commit();
+            
 
         }
         limpiarCampos();
@@ -1050,11 +1145,8 @@ public class principal extends javax.swing.JFrame {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
         limpiarCampos();
+        habilitarCampos(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
-
-    private void jcTransfucionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcTransfucionesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jcTransfucionesActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
@@ -1076,8 +1168,68 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         habilitarCampos(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void tfEdadFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfEdadFocusGained
+        // TODO add your handling code here:
+        tfEdad.setText(calcularEdad());
+    }//GEN-LAST:event_tfEdadFocusGained
+
     /**
-     * Busca un paciente en la tabla Pacinetes, de acuerdo a lo que esta
+     * Se debe cambiar el nombre de Este boton ya que solo agrega seguimientos
+     * Cuando se presiona este boton, se debe crear un nuevo seguimiento
+     * y guardar en la base de datos, el texto escrito por el usuario y la fecha
+     * 
+     * @param evt 
+     */
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        if (paciente == null || paciente.getId() == null) {
+            showMensaje(AppProperties.TITLE_USER_NOT_SELECTED, AppProperties.MSG_USER_NOT_SELECTED);
+            return;
+        }
+        if (jtSeguimiento.getText().isEmpty()) {
+            showMensaje(AppProperties.TITLE_SEGUIMIENTO_NO_SET, AppProperties.MSG_SEGUIMIENTO_NO_SET);
+            return;
+        
+        }
+        cargarVistaASeguimiento();
+        guardar(seguimiento);
+        limpiarCampos();
+        cargarSeguimientos();
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnaddEstudiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddEstudiosActionPerformed
+        // TODO add your handling code here:
+        if (paciente == null || paciente.getId() == null) {
+            showMensaje(AppProperties.TITLE_USER_NOT_SELECTED, AppProperties.MSG_USER_NOT_SELECTED);
+            return;
+        }
+        if (tfEstudiosAnexos.getText().isEmpty()) {
+            showMensaje(AppProperties.TITLE_ESTUDIOSANEXOS_NO_SET, AppProperties.MSG_ESTUDIOSANEXOS_NO_SET);
+            return;
+        
+        }
+        cargarVistaAEstudios();
+        guardar(estudiosanexo);
+        limpiarCampos();
+        cargarEstudios();
+        //
+    }//GEN-LAST:event_btnaddEstudiosActionPerformed
+    
+    /**
+     * Si en el calendar cambia de fecha refrescar la tabla con los datos de la 
+     * bbdd
+     * @param evt 
+     */
+    private void calendarfechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarfechaPropertyChange
+        // TODO add your handling code here:
+        System.out.println("calendarFecha: "+ evt.getPropertyName());
+        if (evt.getPropertyName().equals(AppProperties.PROPIEDAD_FECHA)) {
+            cargarTablaAgenda();
+        }
+    }//GEN-LAST:event_calendarfechaPropertyChange
+    /**
+     * Busca un paciente en la tabla Pacientes, de acuerdo a lo que esta
      * seleccionado en la grilla si nada no esta seleccionado retorna null
      *
      * @return
@@ -1136,11 +1288,7 @@ public class principal extends javax.swing.JFrame {
         });
     }
 
-    EntityManager em;
-    List<Usuario> usuarioList;
-    Usuario user;
-
-    private Paciente paciente;
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -1151,6 +1299,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnVerPac;
+    private javax.swing.JButton btnaddEstudios;
     private com.toedter.calendar.JDateChooser calFechaNacimiento;
     private com.toedter.calendar.JDateChooser calendarfecha;
     private javax.swing.JCheckBox cbTieneAlergia;
@@ -1184,11 +1333,12 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JCheckBox jcFrecuencia;
     private javax.swing.JComboBox jcHora;
     private javax.swing.JCheckBox jcPresion;
@@ -1215,6 +1365,9 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JPanel panelFichaMedica;
     private javax.swing.JTable tablaPaciente;
     private javax.swing.JTable tablaUsuario;
+    private javax.swing.JTable tblAgenda;
+    private javax.swing.JTable tblEstudios;
+    private javax.swing.JTable tblSeguimiento;
     private javax.swing.JTextField tfApellido;
     private javax.swing.JTextField tfCel;
     private javax.swing.JTextField tfDocumento;
@@ -1230,6 +1383,7 @@ public class principal extends javax.swing.JFrame {
         em = HibernateUtil.getSessionFactory().createEntityManager();
         paciente = new Paciente();
         fichaMedica = new FichaMedica();
+        agenda = new Agenda();
         jtAlergias.setVisible(false);
         cargarDatosPacientes();
         listenerMenu = new ActionListener() {
@@ -1240,13 +1394,15 @@ public class principal extends javax.swing.JFrame {
 
             
         };
-        tablaPaciente.setComponentPopupMenu(new MenuTablaPaciente(listenerMenu));
+        
     }
     
     //Para Implementar los menus de las tablas las acciones que queres que sucedan
     private void ejecutarMenu(ActionEvent ae) {
         
         Paciente modificar = getSelectedPaciente();
+        int selectedTab = jTabbedPane1.getSelectedIndex();
+        
         
         if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Nuevo.name())){
             
@@ -1260,33 +1416,56 @@ public class principal extends javax.swing.JFrame {
         if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Seguimiento.name())){
             
         }
+        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Agendar.name())){
+            btnAgendarActionPerformed(ae);
+        }
         /*
         Para borrar se necesita verificar si tiene relaciones en otras tablas
         por defecto vamos a borrar, luego hay que verificar si devemos bloquear o no ciertas 
         acciones
         */
         if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Borrar.name())){
-            if (modificar ==null) {
-                return;
+            if (selectedTab == TAB_PACIENTE) {
+                if (modificar == null) {
+                    return;
+                }
+                if (!modificar.getFichaMedicas().isEmpty()) {
+                    //tiene fichas medicas, entonces borro las fichas
+                    deleteAll(modificar.getFichaMedicas().iterator());
+                }
+                if (!modificar.getSeguimientos().isEmpty()) {
+                    //Tiene seguimientos entonces debo borrar
+                    deleteAll(modificar.getSeguimientos().iterator());
+
+                }
+                if (!modificar.getEstudioses().isEmpty()) {
+                    //Tiene estudios entonces debo borrar
+                    deleteAll(modificar.getEstudioses().iterator());
+                }
+                borrar(modificar);
+
+                //se borro todo entonces recargar la tabla
+                cargarDatosPacientes();
             }
-            if (!modificar.getFichaMedicas().isEmpty()) {
-                //tiene fichas medicas, entonces borro las fichas
-                deleteAll( modificar.getFichaMedicas().iterator());
-            }
-            if (!modificar.getSeguimientos().isEmpty()) {
-                //Tiene seguimientos entonces debo borrar
-                deleteAll( modificar.getSeguimientos().iterator());
+        }
+        
+        //Los menu de la tabla Paciente
+        if (ae.getActionCommand().equals(MenuTablaGeneral.MenuGeneral.Editar.name())){    
             
+            if (selectedTab == TAB_AGENDA) {
+                agenda = tableModelAgenda.getItem(tblAgenda.getSelectedRow());
+                cargarAgendaAVista();
             }
-            if (!modificar.getEstudioses().isEmpty()) {
-                //Tiene estudios entonces debo borrar
-                deleteAll( modificar.getEstudioses().iterator());
+        }
+        if (ae.getActionCommand().equals(MenuTablaGeneral.MenuGeneral.Borrar.name())){
+            int opt=showMensaje(AppProperties.TITLE_ALERT_BORRAR, AppProperties.MSG_ALERT_BORRAR);
+            if (selectedTab == TAB_AGENDA && opt == AppProperties.OPCION_BORRRAR) {
+                Object itemABorrar = tableModelAgenda.getItem(tblAgenda.getSelectedRow());
+                borrar(itemABorrar);
+                cargarTablaAgenda();
             }
-            em.getTransaction().begin();
-            em.remove(modificar);
-            em.getTransaction().commit();
-            //se borro todo entonces recargar la tabla
-            cargarDatosPacientes();
+            
+            
         }
     }
 
@@ -1325,14 +1504,13 @@ public class principal extends javax.swing.JFrame {
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
             jtSeguimiento.setText("");
+            seguimiento = new Seguimiento();
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
             tfEstudiosAnexos.setText("");
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
-            jtPaciente.setText("");
-            calendarfecha.setDate(new Date());
-            jcHora.setSelectedIndex(0);
+            
         }
 
     }
@@ -1343,33 +1521,12 @@ public class principal extends javax.swing.JFrame {
         tfApellido.setText(paciente.getApellido());
         calFechaNacimiento.setDate(paciente.getFechanac());
         //Hacer calculo de edad
-        tfEdad.setText("");
+        tfEdad.setText(calcularEdad());
         tfTel.setText(paciente.getTel());
         tfCel.setText(paciente.getCel());
     }
 
-    /**
-     * Verifica un string que cumpla con el formato "dd/MM/yyyy"
-     *
-     * @param aVerificar
-     * @return un date si la fecha es correcta , null en caso contrario
-     */
-    private Date verificarFecha(String aVerificar) {
-
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        Date fecha;
-
-        try {
-
-            fecha = format.parse(aVerificar);
-
-        } catch (ParseException e) {
-            System.out.println(e.toString());
-            fecha = null;
-        }
-        return fecha;
-    }
-
+    
     /**
      * cargar datos pacientes a la grilla
      * 
@@ -1421,10 +1578,7 @@ public class principal extends javax.swing.JFrame {
         paciente.setDocumento(doc);
         paciente.setNombre(tfNombre.getText());
         paciente.setApellido(tfApellido.getText());
-        //Aqui es donde se chequea la fecha
-
-        //Date fecha = verificarFecha(tfFechaNacimiento.getText());
-        //Verificamos del JCalendar
+        
         paciente.setFechanac(calFechaNacimiento.getDate());
         paciente.setTel(tfTel.getText());
         paciente.setCel(tfCel.getText());
@@ -1437,7 +1591,8 @@ public class principal extends javax.swing.JFrame {
             tfNombre.setEditable(estado);
             tfApellido.setEditable(estado);
             calFechaNacimiento.setEnabled(estado);
-            tfEdad.setEditable(estado);
+            //Este campo no es editable
+//            tfEdad.setEditable(estado);
             tfTel.setEditable(estado);
             tfCel.setEditable(estado);
 
@@ -1473,22 +1628,28 @@ public class principal extends javax.swing.JFrame {
             tfEstudiosAnexos.setEditable(estado);
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
-            jtPaciente.setEditable(estado);
-            calendarfecha.setDate(new Date());
-            jcHora.setSelectedIndex(0);
+            
+            
         }
     }
+    
+    /**
+     * Metodo para calcular la edad
+     */
+    
 
-    private void calcularEdad() {
+    private String calcularEdad() {
         
-        DateTimeFormatter date = DateTimeFormatter.ISO_LOCAL_DATE;
-        LocalDate fechadenacimiento = LocalDate.parse(calFechaNacimiento.getDateFormatString(), date);
-        LocalDate fechaactual = LocalDate.now();
-
-        Period periodo = Period.between(fechadenacimiento, fechaactual);
-
-        String resultado = ("Tienes: " + periodo.getYears() + "Años ");
-        System.out.println(resultado);
+        LocalDate ahora = LocalDate.now();
+        LocalDate fechaSeleccionada ;
+        long edad  = 0;
+        ZoneId zoneId = ZoneId.systemDefault();
+        fechaSeleccionada = calFechaNacimiento.getCalendar().
+                toInstant().atZone(zoneId).toLocalDate();
+        
+        edad = ChronoUnit.YEARS.between(fechaSeleccionada , ahora);
+        return edad + " años";
+        
     }
 
     private int showMensaje(String titulo, String mensaje) {
@@ -1511,6 +1672,151 @@ public class principal extends javax.swing.JFrame {
             em.remove(it.next());
             em.getTransaction().commit();
         }
+    }
+
+    /**
+     * Se asignan los datos de la vista seguimiento al objeto seguimiento para 
+     * guardar dicho objeto
+     */
+    private void cargarVistaASeguimiento() {
+        
+        //Un ejemplo interesante seria guardar la fecha del seguimiento
+        SimpleDateFormat  sdf = new SimpleDateFormat(AppProperties.FECHA_DEFAULT_FORMAT);
+        Date fechaSeg = new Date();
+        String fecha = sdf.format(fechaSeg);
+        seguimiento.setPaciente(paciente);
+        seguimiento.setSeguimiento(fecha+": "+jtSeguimiento.getText());
+    }
+    
+   
+    
+    private void cargarVistaAEstudios() {
+        
+        //Un ejemplo interesante seria guardar la fecha del seguimiento
+        SimpleDateFormat  sdf = new SimpleDateFormat(AppProperties.FECHA_DEFAULT_FORMAT);
+        Date fechaSeg = new Date();
+        String fecha = sdf.format(fechaSeg);
+        estudiosanexo.setPaciente(paciente);
+        estudiosanexo.setEstudios(fecha+": "+tfEstudiosAnexos.getText());
+    }
+       
+    /**
+     * Metodo para guardar los datos
+     */
+    private void guardar(Object o) {
+        em.getTransaction().begin();
+        em.persist(o);
+        em.getTransaction().commit();
+    }
+
+    private void cargarVistaAgenda() {
+        agenda.setEvento(jtPaciente.getText());
+        agenda.setFecha(calendarfecha.getDate());
+        
+        SimpleDateFormat formatoDeFecha = new SimpleDateFormat(AppProperties.FORMATO_HORA);
+        Date horaSeleccionada;
+        try {
+            horaSeleccionada = formatoDeFecha.parse(jcHora.getSelectedItem().toString());
+            agenda.setHora(horaSeleccionada);
+        } catch (ParseException ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    /**
+     * En este metodo guardo los datos de las agendas libres y no libres para
+     * una fecha X
+     * 
+     */
+    private void cargarTablaAgenda() {
+        listaAgenda = getListaAgenda();
+        System.out.println("listaAgenda> "+listaAgenda.size());
+        List<Agenda> agendaDia = new ArrayList<>();
+        String [] horariosLibres = AppProperties.HORARIOS_LIBRES;
+        String horaCombo;
+        horariosFiltrados = new ArrayList<>();
+        for (int i = 0; i < horariosLibres.length; i++) {
+            try {
+                horaCombo = horariosLibres[i];
+                Agenda agendaLocal = new Agenda();
+                agendaLocal.setEvento("Libre");
+                agendaLocal.setHora(formatoHora.parse(horaCombo));
+                for (Iterator<Agenda> it = listaAgenda.iterator(); it.hasNext();) {
+                    Agenda agendaBD = it.next();
+                    if (horaCombo.equals(formatoHora.format(agendaBD.getHora()))) {
+                        agendaLocal = agendaBD;
+                        it.remove();
+                        break;
+                    }
+                }
+                if (agendaLocal.getId() == null) {
+                    horariosFiltrados.add(horariosLibres[i]);
+                }
+                agendaDia.add(agendaLocal);
+            } catch (ParseException ex) {
+                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+        tableModelAgenda.setRows(agendaDia);
+        jcHora.setModel(new DefaultComboBoxModel(
+                horariosFiltrados.toArray(new String[horariosFiltrados.size()]))
+        );
+        tableModelAgenda.fireTableDataChanged();
+        //cargar combo
+    }
+    
+    private List<Agenda> getListaAgenda() {
+        
+        return em.createQuery("From Agenda a Where a.fecha = :p1 ORDER BY a.hora")
+                .setParameter("p1", calendarfecha.getDate())
+                .getResultList();
+    }
+
+    private void initTablas() {
+    tableModelSeguimiento = new EntityTableModel<>(Seguimiento.class , new ArrayList<>());
+        tableModelSeguimiento.addColumn("Id", "id");
+        tableModelSeguimiento.addColumn("Seguimiento", "seguimiento");
+        tblSeguimiento.setModel(tableModelSeguimiento);
+        tblSeguimiento.setComponentPopupMenu(new MenuTablaGeneral(listenerMenu));
+        tablaPaciente.setComponentPopupMenu(new MenuTablaPaciente(listenerMenu));
+        tableModelEstudios = new EntityTableModel<>(Estudios.class , new ArrayList<>());
+        tableModelEstudios.addColumn("Id", "id");
+        tableModelEstudios.addColumn("Estudios", "estudios");
+        tblEstudios.setModel(tableModelEstudios);
+        //configurar la tabla agenda
+        tblAgenda.setDefaultRenderer(Object.class, new AgendaViewCellRenderer());
+        tableModelAgenda = new EntityTableModel<>(Agenda.class, listaAgenda);
+        tableModelAgenda.addColumn("Hora", "hora");
+        tableModelAgenda.addColumn("Evento", "evento");
+        tblAgenda.setModel(tableModelAgenda);
+        tblAgenda.setComponentPopupMenu(new MenuTablaGeneral(listenerMenu));
+    }
+
+    private void borrar(Object itemABorrar) {
+        em.getTransaction().begin();
+        em.remove(itemABorrar);
+        em.getTransaction().commit();
+    }
+    
+    /**
+     * Para poder cargar un item agendado
+     * 1) Cargar el evento al jtEvento
+     * 2) Cargar la fecha del evento al calendar
+     * 3) Si la hora no esta en Item seleccionado cargar la hora en el combo
+     */
+    private void cargarAgendaAVista() {
+        jtPaciente.setText(agenda.getEvento());
+        calendarfecha.setDate(agenda.getFecha());
+        //a horarios filtrados agregarle este horario
+        String hora = formatoHora.format(agenda.getHora());
+        horariosFiltrados.add(hora);
+        Collections.sort(horariosFiltrados);
+        jcHora.setModel(new DefaultComboBoxModel(
+                horariosFiltrados.toArray(new String[horariosFiltrados.size()]))
+        );
     }
 
 }

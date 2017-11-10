@@ -7,13 +7,12 @@ package modelo;
 
 import java.sql.Time;
 import java.util.Date;
-import javax.persistence.Entity;
 
 /**
  *
  * @author MEC
  */
-@Entity
+
 public class Agenda implements java.io.Serializable {
 
     public Integer getId() {
@@ -24,12 +23,12 @@ public class Agenda implements java.io.Serializable {
         this.id = id;
     }
 
-    public Paciente getPaciente() {
-        return paciente;
+    public String getEvento() {
+        return evento;
     }
 
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
+    public void setEvento(String evento) {
+        this.evento = evento;
     }
 
     public Date getFecha() {
@@ -40,19 +39,19 @@ public class Agenda implements java.io.Serializable {
         this.fecha = fecha;
     }
 
-    public Time getHora() {
+    public Date getHora() {
         return hora;
     }
 
-    public void setHora(Time hora) {
+    public void setHora(Date hora) {
         this.hora = hora;
     }
      
     
     private Integer id;
-    private Paciente paciente;
+    private String evento;
     private Date fecha;
-    private Time hora;
+    private Date hora;
     
     
     
