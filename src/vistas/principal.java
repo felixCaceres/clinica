@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
@@ -1207,7 +1205,7 @@ public class principal extends javax.swing.JFrame {
             return;
         }
         if (tfEstudiosAnexos.getText().isEmpty()) {
-            showMensaje(AppProperties.TITLE_USER_NOT_SELECTED, AppProperties.MSG_ESTUDIOSANEXOS_NO_SET);
+            showMensaje(AppProperties.TITLE_ESTUDIOSANEXOS_NO_SET, AppProperties.MSG_ESTUDIOSANEXOS_NO_SET);
             return;
         
         }
