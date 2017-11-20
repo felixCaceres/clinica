@@ -11,10 +11,10 @@
         <many-to-one name="paciente" class="modelo.Paciente" fetch="select">
             <column name="paciente_id" not-null="true" />
         </many-to-one>
-        <property name="app" type="string" >
+        <property name="app" type="text" >
             <column name="app" />
         </property>
-        <property name="cirugiaprevia" type="string">
+        <property name="cirugiaprevia" type="text">
             <column name="cirugiaprevia" />
         </property>
         <property name="transfucion" type="java.lang.Boolean">
@@ -32,31 +32,31 @@
         <property name="motivoconsulta" type="string">
             <column name="motivoconsulta" />
         </property>
-        <property name="antecenfernedad" type="string">
+        <property name="antecenfernedad" type="text">
             <column name="antecenfernedad" />
         </property>
         <property name="examenfisico" type="string">
             <column name="examenfisico" />
         </property>
         <property name="efpa" type="string">
-            <column name="efpa" length="45" />
+            <column name="efpa" length="200" />
         </property>
         <property name="efsat" type="string">
-            <column name="efsat" length="45" />
+            <column name="efsat" length="200" />
         </property>
         <property name="effc" type="string">
-            <column name="effc" length="45" />
+            <column name="effc" length="200" />
         </property>
         <property name="eftemp" type="string">
-            <column name="eftemp" length="45" />
+            <column name="eftemp" length="200" />
         </property>
         <property name="estudiosolicitado" type="string">
             <column name="estudiosolicitado" length="45" />
         </property>
-        <property name="imprediagnostico" type="string">
+        <property name="imprediagnostico" type="text">
             <column name="imprediagnostico" />
         </property>
-        <property name="tratamiento" type="string">
+        <property name="tratamiento" type="text">
             <column name="tratamiento" />
         </property>
     </class>
