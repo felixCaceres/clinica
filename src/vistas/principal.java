@@ -1194,8 +1194,17 @@ public class principal extends javax.swing.JFrame {
         habilitarCampos(true);
         if (jTabbedPane1.getSelectedIndex() == TAB_PACIENTE) {
             tfDocumento.requestFocus();
-            
+          
 
+        }
+        if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
+            jtAPP.requestFocus();
+        }
+        if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
+            jtSeguimiento.requestFocus();
+        }
+        if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
+            tfEstudiosAnexos.requestFocus();
         }
         
     }//GEN-LAST:event_btnNuevoActionPerformed
