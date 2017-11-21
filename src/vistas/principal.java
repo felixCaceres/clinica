@@ -9,6 +9,8 @@ import framework.EntityTableModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -23,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -1560,7 +1563,29 @@ public class principal extends javax.swing.JFrame {
             
         }
     }
-
+    //Metodo para cuando se presiona el cosable del jframe
+    private void cerrar (){
+            try {
+                this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                addWindowListener(new WindowAdapter() {
+                    public void cerrarVentana (WindowEvent e){
+                        confirmarSalida();
+                    
+                    }
+                });
+                this.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+    //confirmar salida
+    public void confirmarSalida(){
+        int valor = JOptionPane.showConfirmDialog(this, "¿Quiere Salir del Sistema?", "Advertencia",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+        if(valor == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+            
+    }
     private void limpiarCampos() {
         if (jTabbedPane1.getSelectedIndex() == TAB_PACIENTE) {
             tfDocumento.setText("");
