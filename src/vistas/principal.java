@@ -374,7 +374,6 @@ public class principal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
 
         tablaPaciente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -617,6 +616,7 @@ public class principal extends javax.swing.JFrame {
         jtTratamiento.setRows(5);
         jScrollPane4.setViewportView(jtTratamiento);
 
+        jtImpresion.setEditable(false);
         jtImpresion.setColumns(20);
         jtImpresion.setRows(5);
         jScrollPane10.setViewportView(jtImpresion);
@@ -629,14 +629,17 @@ public class principal extends javax.swing.JFrame {
 
         jLabel26.setText("Temp");
 
+        jtAEA.setEditable(false);
         jtAEA.setColumns(20);
         jtAEA.setRows(5);
         jScrollPane11.setViewportView(jtAEA);
 
+        jtCirugias.setEditable(false);
         jtCirugias.setColumns(20);
         jtCirugias.setRows(5);
         jScrollPane12.setViewportView(jtCirugias);
 
+        jtAPP.setEditable(false);
         jtAPP.setColumns(20);
         jtAPP.setRows(5);
         jScrollPane13.setViewportView(jtAPP);
@@ -1525,6 +1528,14 @@ public class principal extends javax.swing.JFrame {
                 agenda = tableModelAgenda.getItem(tblAgenda.getSelectedRow());
                 cargarAgendaAVista();
             }
+            if (selectedTab == TAB_SEGUIMIENTO){
+                seguimiento = tableModelSeguimiento.getItem(tblSeguimiento.getSelectedRow());
+                cargarSeguimientoAVistas();
+            }
+            if (selectedTab == TAB_ESTUDIOS){
+                estudiosanexo = tableModelEstudios.getItem(tblEstudios.getSelectedRow());
+                cargarEstudiosAVistas();
+            }
         }
         if (ae.getActionCommand().equals(MenuTablaGeneral.MenuGeneral.Borrar.name())){
             int opt=showMensaje(AppProperties.TITLE_ALERT_BORRAR, AppProperties.MSG_ALERT_BORRAR);
@@ -1886,6 +1897,16 @@ public class principal extends javax.swing.JFrame {
         jcHora.setModel(new DefaultComboBoxModel(
                 horariosFiltrados.toArray(new String[horariosFiltrados.size()]))
         );
+    }
+
+    private void cargarSeguimientoAVistas() {
+        jtSeguimiento.setText(seguimiento.getSeguimiento());
+        
+        
+    }
+
+    private void cargarEstudiosAVistas() {
+        tfEstudiosAnexos.setText(estudiosanexo.getEstudios());
     }
 
 }
