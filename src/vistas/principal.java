@@ -1192,6 +1192,12 @@ public class principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         limpiarCampos();
         habilitarCampos(true);
+        if (jTabbedPane1.getSelectedIndex() == TAB_PACIENTE) {
+            tfDocumento.requestFocus();
+            
+
+        }
+        
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
