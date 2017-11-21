@@ -146,6 +146,14 @@ public class principal extends javax.swing.JFrame {
                     //Cargar los datos de los seguimientos
                     cargarSeguimientos();
                 }
+                if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
+                    if (tablaPaciente.getSelectedRow() < 0) {
+                        return;
+                    }
+                    paciente = getSelectedPaciente();
+                    //Cargar los datos de los seguimientos
+                    cargarEstudios();
+                }
             }
 
 
@@ -1480,13 +1488,17 @@ public class principal extends javax.swing.JFrame {
             
         }
         if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Editar.name())){
-            
+            jTabbedPane1.setSelectedIndex(TAB_PACIENTE);
+            habilitarCampos(true);
         }
         if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.FichaMedica.name())){
             jTabbedPane1.setSelectedIndex(TAB_FICHA_MEDICA);
         }
         if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Seguimiento.name())){
-            
+            jTabbedPane1.setSelectedIndex(TAB_SEGUIMIENTO);
+        }
+        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Estudios.name())){
+            jTabbedPane1.setSelectedIndex(TAB_ESTUDIOS);
         }
         if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Agendar.name())){
             btnAgendarActionPerformed(ae);
