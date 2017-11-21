@@ -26,32 +26,32 @@
         <property name="descalergia" type="string">
             <column name="descalergia" />
         </property>
-        <property name="antecefamiliar" type="string">
+        <property name="antecefamiliar" type="text">
             <column name="antecefamiliar" />
         </property>
-        <property name="motivoconsulta" type="string">
+        <property name="motivoconsulta" type="text">
             <column name="motivoconsulta" />
         </property>
         <property name="antecenfernedad" type="text">
             <column name="antecenfernedad" />
         </property>
-        <property name="examenfisico" type="string">
+        <property name="examenfisico" type="text">
             <column name="examenfisico" />
         </property>
-        <property name="efpa" type="string">
+        <property name="efpa" type="text">
             <column name="efpa" length="200" />
         </property>
-        <property name="efsat" type="string">
+        <property name="efsat" type="text">
             <column name="efsat" length="200" />
         </property>
-        <property name="effc" type="string">
+        <property name="effc" type="text">
             <column name="effc" length="200" />
         </property>
-        <property name="eftemp" type="string">
+        <property name="eftemp" type="text">
             <column name="eftemp" length="200" />
         </property>
-        <property name="estudiosolicitado" type="string">
-            <column name="estudiosolicitado" length="45" />
+        <property name="estudiosolicitado" type="text">
+            <column name="estudiosolicitado" length="200" />
         </property>
         <property name="imprediagnostico" type="text">
             <column name="imprediagnostico" />
