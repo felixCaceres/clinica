@@ -52,7 +52,7 @@ import util.AppProperties;
 public class principal extends javax.swing.JFrame {
 
     DefaultTableModel model;
-
+    Integer TAB_CONSSULTA_PAC;
     Integer TAB_PACIENTE = 1;
     Integer TAB_FICHA_MEDICA = 2;
     Integer TAB_SEGUIMIENTO = 3;
@@ -1482,25 +1482,26 @@ public class principal extends javax.swing.JFrame {
         Paciente modificar = getSelectedPaciente();
         int selectedTab = jTabbedPane1.getSelectedIndex();
         
-        
-        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Nuevo.name())){
+        if (selectedTab == TAB_CONSSULTA_PAC){
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Nuevo.name())){
             
-        }
-        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Editar.name())){
+            }
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Editar.name())){
             jTabbedPane1.setSelectedIndex(TAB_PACIENTE);
             habilitarCampos(true);
-        }
-        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.FichaMedica.name())){
+            }
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.FichaMedica.name())){
             jTabbedPane1.setSelectedIndex(TAB_FICHA_MEDICA);
-        }
-        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Seguimiento.name())){
+            }
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Seguimiento.name())){
             jTabbedPane1.setSelectedIndex(TAB_SEGUIMIENTO);
-        }
-        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Estudios.name())){
+            }
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Estudios.name())){
             jTabbedPane1.setSelectedIndex(TAB_ESTUDIOS);
-        }
-        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Agendar.name())){
+            }
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Agendar.name())){
             btnAgendarActionPerformed(ae);
+            }
         }
         /*
         Para borrar se necesita verificar si tiene relaciones en otras tablas
@@ -1542,6 +1543,7 @@ public class principal extends javax.swing.JFrame {
             if (selectedTab == TAB_SEGUIMIENTO){
                 seguimiento = tableModelSeguimiento.getItem(tblSeguimiento.getSelectedRow());
                 cargarSeguimientoAVistas();
+                return;
             }
             if (selectedTab == TAB_ESTUDIOS){
                 estudiosanexo = tableModelEstudios.getItem(tblEstudios.getSelectedRow());
