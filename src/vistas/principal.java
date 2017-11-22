@@ -52,7 +52,7 @@ import util.AppProperties;
 public class principal extends javax.swing.JFrame {
 
     DefaultTableModel model;
-    Integer TAB_CONSSULTA_PAC;
+    Integer TAB_CONSULTA_PAC = 0;
     Integer TAB_PACIENTE = 1;
     Integer TAB_FICHA_MEDICA = 2;
     Integer TAB_SEGUIMIENTO = 3;
@@ -1482,7 +1482,7 @@ public class principal extends javax.swing.JFrame {
         Paciente modificar = getSelectedPaciente();
         int selectedTab = jTabbedPane1.getSelectedIndex();
         
-        if (selectedTab == TAB_CONSSULTA_PAC){
+        if (selectedTab == TAB_CONSULTA_PAC){
             if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Nuevo.name())){
             
             }
@@ -1502,43 +1502,45 @@ public class principal extends javax.swing.JFrame {
             if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Agendar.name())){
             btnAgendarActionPerformed(ae);
             }
-        }
-        /*
-        Para borrar se necesita verificar si tiene relaciones en otras tablas
-        por defecto vamos a borrar, luego hay que verificar si devemos bloquear o no ciertas 
-        acciones
-        */
-        if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Borrar.name())){
-            if (selectedTab == TAB_PACIENTE) {
-                if (modificar == null) {
-                    return;
-                }
-                if (!modificar.getFichaMedicas().isEmpty()) {
-                    //tiene fichas medicas, entonces borro las fichas
-                    deleteAll(modificar.getFichaMedicas().iterator());
-                }
-                if (!modificar.getSeguimientos().isEmpty()) {
-                    //Tiene seguimientos entonces debo borrar
-                    deleteAll(modificar.getSeguimientos().iterator());
+            /*
+            Para borrar se necesita verificar si tiene relaciones en otras tablas
+            por defecto vamos a borrar, luego hay que verificar si devemos bloquear o no ciertas 
+            acciones
+             */
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Borrar.name())) {
+                if (selectedTab == TAB_PACIENTE) {
+                    if (modificar == null) {
+                        return;
+                    }
+                    if (!modificar.getFichaMedicas().isEmpty()) {
+                        //tiene fichas medicas, entonces borro las fichas
+                        deleteAll(modificar.getFichaMedicas().iterator());
+                    }
+                    if (!modificar.getSeguimientos().isEmpty()) {
+                        //Tiene seguimientos entonces debo borrar
+                        deleteAll(modificar.getSeguimientos().iterator());
 
-                }
-                if (!modificar.getEstudioses().isEmpty()) {
-                    //Tiene estudios entonces debo borrar
-                    deleteAll(modificar.getEstudioses().iterator());
-                }
-                borrar(modificar);
+                    }
+                    if (!modificar.getEstudioses().isEmpty()) {
+                        //Tiene estudios entonces debo borrar
+                        deleteAll(modificar.getEstudioses().iterator());
+                    }
+                    borrar(modificar);
 
-                //se borro todo entonces recargar la tabla
-                cargarDatosPacientes();
+                    //se borro todo entonces recargar la tabla
+                    cargarDatosPacientes();
+                }
             }
         }
         
-        //Los menu de la tabla Paciente
+        
+        //Los menu generales en las tablas
         if (ae.getActionCommand().equals(MenuTablaGeneral.MenuGeneral.Editar.name())){    
             
             if (selectedTab == TAB_AGENDA) {
                 agenda = tableModelAgenda.getItem(tblAgenda.getSelectedRow());
                 cargarAgendaAVista();
+                return;
             }
             if (selectedTab == TAB_SEGUIMIENTO){
                 seguimiento = tableModelSeguimiento.getItem(tblSeguimiento.getSelectedRow());
@@ -1548,6 +1550,7 @@ public class principal extends javax.swing.JFrame {
             if (selectedTab == TAB_ESTUDIOS){
                 estudiosanexo = tableModelEstudios.getItem(tblEstudios.getSelectedRow());
                 cargarEstudiosAVistas();
+                return;
             }
         }
         if (ae.getActionCommand().equals(MenuTablaGeneral.MenuGeneral.Borrar.name())){
@@ -1565,13 +1568,14 @@ public class principal extends javax.swing.JFrame {
     private void cerrar (){
             try {
                 this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                addWindowListener(new WindowAdapter() {
-                    public void cerrarVentana (WindowEvent e){
+                addWindowListener( new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        super.windowClosing(e); //To change body of generated methods, choose Tools | Templates.
                         confirmarSalida();
-                    
                     }
+                    
                 });
-                this.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1623,6 +1627,7 @@ public class principal extends javax.swing.JFrame {
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
             tfEstudiosAnexos.setText("");
+            estudiosanexo = new Estudios();
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
             
