@@ -79,6 +79,13 @@ public class principal extends javax.swing.JFrame {
     EntityManager em;
     List<Usuario> usuarioList;
     Usuario user;
+    
+    
+    
+    
+    
+    
+    
 
     private Paciente paciente;
 
