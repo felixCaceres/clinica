@@ -356,6 +356,7 @@ public class principal extends javax.swing.JFrame {
         jtCirugias = new javax.swing.JTextArea();
         jScrollPane13 = new javax.swing.JScrollPane();
         jtAPP = new javax.swing.JTextArea();
+        jLabel28 = new javax.swing.JLabel();
         jPSeguimiento = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         btnAdd = new javax.swing.JButton();
@@ -449,7 +450,7 @@ public class principal extends javax.swing.JFrame {
                         .addGroup(jpConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnVerPac, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnAgendar, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
-                        .addGap(0, 70, Short.MAX_VALUE)))
+                        .addGap(0, 119, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jpConsultaLayout.setVerticalGroup(
@@ -548,7 +549,7 @@ public class principal extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(16, 16, 16)
                         .addComponent(tfDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(256, Short.MAX_VALUE))
+                .addContainerGap(305, Short.MAX_VALUE))
         );
         jpPacienteLayout.setVerticalGroup(
             jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -662,6 +663,8 @@ public class principal extends javax.swing.JFrame {
         jtAPP.setRows(5);
         jScrollPane13.setViewportView(jtAPP);
 
+        jLabel28.setText("Tratamiento:");
+
         javax.swing.GroupLayout panelFichaMedicaLayout = new javax.swing.GroupLayout(panelFichaMedica);
         panelFichaMedica.setLayout(panelFichaMedicaLayout);
         panelFichaMedicaLayout.setHorizontalGroup(
@@ -671,14 +674,6 @@ public class principal extends javax.swing.JFrame {
                 .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFichaMedicaLayout.createSequentialGroup()
                         .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(panelFichaMedicaLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jcTransfuciones)
-                                .addGap(10, 10, 10)
-                                .addComponent(cbTieneAlergia)
-                                .addGap(18, 18, 18)
-                                .addComponent(jtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(88, 88, 88))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
                                 .addComponent(jLabel14)
                                 .addGap(18, 18, 18)
@@ -704,16 +699,25 @@ public class principal extends javax.swing.JFrame {
                                     .addComponent(jLabel13)
                                     .addGap(18, 18, 18)
                                     .addComponent(jScrollPane11)))
+                            .addGroup(panelFichaMedicaLayout.createSequentialGroup()
+                                .addGap(0, 84, Short.MAX_VALUE)
+                                .addComponent(jLabel17)
+                                .addGap(430, 430, 430))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
                                 .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel23)
                                     .addComponent(tfPA, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel16))
+                                    .addComponent(jLabel16)
+                                    .addComponent(jLabel15)
+                                    .addComponent(jLabel28))
                                 .addGap(18, 18, 18)
                                 .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(panelFichaMedicaLayout.createSequentialGroup()
-                                        .addComponent(jScrollPane10)
-                                        .addGap(18, 18, 18))
+                                        .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jtEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(panelFichaMedicaLayout.createSequentialGroup()
                                         .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel24)
@@ -725,19 +729,15 @@ public class principal extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel26)
-                                            .addComponent(tfTemp)))
-                                    .addGroup(panelFichaMedicaLayout.createSequentialGroup()
-                                        .addComponent(jtEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
+                                            .addComponent(tfTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                         .addGap(109, 109, 109))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFichaMedicaLayout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addGap(62, 62, 62)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(106, 106, 106))
                     .addGroup(panelFichaMedicaLayout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jcTransfuciones)
+                        .addGap(10, 10, 10)
+                        .addComponent(cbTieneAlergia)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelFichaMedicaLayout.setVerticalGroup(
             panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -755,7 +755,7 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(cbTieneAlergia)
                     .addComponent(jcTransfuciones)
                     .addComponent(jtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(8, 8, 8)
                 .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFichaMedicaLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
@@ -791,12 +791,14 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(jtEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16))
-                .addGap(74, 74, 74)
+                    .addComponent(jLabel16)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel17)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel28))
+                .addGap(62, 62, 62)
+                .addComponent(jLabel17)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -842,7 +844,7 @@ public class principal extends javax.swing.JFrame {
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnAdd)
-                        .addGap(0, 50, Short.MAX_VALUE)))
+                        .addGap(0, 99, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPSeguimientoLayout.setVerticalGroup(
@@ -854,7 +856,7 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(jLabel18)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -901,7 +903,7 @@ public class principal extends javax.swing.JFrame {
                         .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnaddEstudios)
-                        .addGap(0, 49, Short.MAX_VALUE)))
+                        .addGap(0, 98, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jpEstudiosLayout.setVerticalGroup(
@@ -964,7 +966,7 @@ public class principal extends javax.swing.JFrame {
                             .addComponent(calendarfecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jcHora, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE))
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jpAgendaLayout.setVerticalGroup(
@@ -983,7 +985,7 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(jcHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22))
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1008,7 +1010,7 @@ public class principal extends javax.swing.JFrame {
             jpUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpUsuariosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jpUsuariosLayout.setVerticalGroup(
@@ -1016,7 +1018,7 @@ public class principal extends javax.swing.JFrame {
             .addGroup(jpUsuariosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(154, Short.MAX_VALUE))
+                .addContainerGap(187, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Usuarios", jpUsuarios);
@@ -1068,7 +1070,7 @@ public class principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnNuevo)
@@ -1085,8 +1087,8 @@ public class principal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 593, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnNuevo)
@@ -1399,6 +1401,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
