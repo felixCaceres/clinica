@@ -31,4 +31,6 @@ public class AppProperties {
     public static String FORMATO_HORA = "HH:mm";
     public static String PROPIEDAD_FECHA = "date";
     public static int OPCION_BORRRAR = 0;
+    
+    public static String[] CLINICAS = new String []{"CLINICA TAJY", "SANATORIO RIO"};
 }

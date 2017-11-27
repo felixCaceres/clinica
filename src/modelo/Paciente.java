@@ -19,6 +19,15 @@ public class Paciente  implements java.io.Serializable {
      private Date fechanac;
      private String tel;
      private String cel;
+     private String lugarConsulta;
+
+    public String getLugarConsulta() {
+        return lugarConsulta;
+    }
+
+    public void setLugarConsulta(String lugarConsulta) {
+        this.lugarConsulta = lugarConsulta;
+    }
      private Set fichaMedicas = new HashSet(0);
      private Set estudioses = new HashSet(0);
      private Set seguimientos = new HashSet(0);
