@@ -5,12 +5,15 @@
  */
 package vistas;
 
+
 import framework.EntityTableModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -36,6 +39,7 @@ import modelo.FichaMedica;
 import modelo.Paciente;
 import modelo.Seguimiento;
 import modelo.Usuario;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import util.AppProperties;
 
 /**
@@ -387,6 +391,7 @@ public class principal extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -1056,6 +1061,13 @@ public class principal extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Archivo");
         jMenuBar1.add(jMenu1);
 
@@ -1080,6 +1092,8 @@ public class principal extends javax.swing.JFrame {
                 .addComponent(btnCancelar)
                 .addGap(18, 18, 18)
                 .addComponent(btnSalir)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -1092,7 +1106,8 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(btnNuevo)
                     .addComponent(btnEditar)
                     .addComponent(btnCancelar)
-                    .addComponent(btnSalir))
+                    .addComponent(btnSalir)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1305,6 +1320,20 @@ public class principal extends javax.swing.JFrame {
             cargarTablaAgenda();
         }
     }//GEN-LAST:event_calendarfechaPropertyChange
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            // TODO add your handling code here:
+            
+            Connection c = HibernateUtil.getSessionFactory().
+                    getSessionFactoryOptions().getServiceRegistry().
+                    getService(ConnectionProvider.class).getConnection();
+            //a partir de aqui tiene que ir los metodos del jasperreport
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
     /**
      * Busca un paciente en la tabla Pacientes, de acuerdo a lo que esta
      * seleccionado en la grilla si nada no esta seleccionado retorna null
@@ -1380,6 +1409,7 @@ public class principal extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser calFechaNacimiento;
     private com.toedter.calendar.JDateChooser calendarfecha;
     private javax.swing.JCheckBox cbTieneAlergia;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
