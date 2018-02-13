@@ -208,6 +208,7 @@ public class principal extends javax.swing.JFrame {
         fichaMedica.setEstudiosolicitado(jtEstudios.getText());
         fichaMedica.setImprediagnostico(jtImpresion.getText());
         fichaMedica.setTratamiento(jtTratamiento.getText());
+        fichaMedica.setExamenfisico(jtExamenFisico.getText());
         
     }
 
@@ -253,7 +254,7 @@ public class principal extends javax.swing.JFrame {
         jtEstudios.setText                       (fichaMedica.getEstudiosolicitado());
         jtImpresion.setText                      (fichaMedica.getImprediagnostico());
         jtTratamiento.setText                    (fichaMedica.getTratamiento());
-        jtExamen.setText                         (fichaMedica.getExamenfisico());
+        jtExamenFisico.setText                   (fichaMedica.getExamenfisico());
         tfPA.setText                             (fichaMedica.getEfpa());
         tfFC.setText                             (fichaMedica.getEffc());
         tfSat.setText                            (fichaMedica.getEfsat());
@@ -301,6 +302,7 @@ public class principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane2 = new javax.swing.JTabbedPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jpConsulta = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -324,6 +326,8 @@ public class principal extends javax.swing.JFrame {
         tfTel = new javax.swing.JTextField();
         tfCel = new javax.swing.JTextField();
         calFechaNacimiento = new com.toedter.calendar.JDateChooser();
+        cbLugarConsultas = new javax.swing.JComboBox<>();
+        jLabel27 = new javax.swing.JLabel();
         panelFichaMedica = new javax.swing.JPanel();
         jtAlergias = new javax.swing.JTextField();
         cbTieneAlergia = new javax.swing.JCheckBox();
@@ -337,7 +341,7 @@ public class principal extends javax.swing.JFrame {
         jtMotivoconsulta = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jtExamen = new javax.swing.JTextField();
+        jtExamenFisico = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         jtEstudios = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
@@ -360,6 +364,7 @@ public class principal extends javax.swing.JFrame {
         jtCirugias = new javax.swing.JTextArea();
         jScrollPane13 = new javax.swing.JScrollPane();
         jtAPP = new javax.swing.JTextArea();
+        jLabel28 = new javax.swing.JLabel();
         jPSeguimiento = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         btnAdd = new javax.swing.JButton();
@@ -454,7 +459,7 @@ public class principal extends javax.swing.JFrame {
                         .addGroup(jpConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnVerPac, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnAgendar, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
-                        .addGap(0, 70, Short.MAX_VALUE)))
+                        .addGap(0, 119, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jpConsultaLayout.setVerticalGroup(
@@ -512,6 +517,10 @@ public class principal extends javax.swing.JFrame {
             }
         });
 
+        cbLugarConsultas.setModel(new javax.swing.DefaultComboBoxModel<>(AppProperties.CLINICAS));
+
+        jLabel27.setText("Lugar de consulta");
+
         javax.swing.GroupLayout jpPacienteLayout = new javax.swing.GroupLayout(jpPaciente);
         jpPaciente.setLayout(jpPacienteLayout);
         jpPacienteLayout.setHorizontalGroup(
@@ -519,41 +528,52 @@ public class principal extends javax.swing.JFrame {
             .addGroup(jpPacienteLayout.createSequentialGroup()
                 .addGroup(jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpPacienteLayout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addComponent(jLabel4)
-                        .addGap(23, 23, 23)
-                        .addComponent(tfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpPacienteLayout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addComponent(jLabel5)
-                        .addGap(23, 23, 23)
-                        .addComponent(tfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpPacienteLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel6)
-                        .addGap(21, 21, 21)
-                        .addComponent(calFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpPacienteLayout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addComponent(jLabel7)
-                        .addGap(26, 26, 26)
-                        .addComponent(tfEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpPacienteLayout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(jLabel8)
+                        .addGroup(jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpPacienteLayout.createSequentialGroup()
+                                .addGap(90, 90, 90)
+                                .addComponent(jLabel4)
+                                .addGap(23, 23, 23)
+                                .addComponent(tfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jpPacienteLayout.createSequentialGroup()
+                                .addGap(90, 90, 90)
+                                .addComponent(jLabel5)
+                                .addGap(23, 23, 23)
+                                .addComponent(tfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jpPacienteLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel6)
+                                .addGap(21, 21, 21)
+                                .addComponent(calFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jpPacienteLayout.createSequentialGroup()
+                                .addGap(100, 100, 100)
+                                .addComponent(jLabel7)
+                                .addGap(26, 26, 26)
+                                .addComponent(tfEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jpPacienteLayout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(jLabel3)
+                                .addGap(16, 16, 16)
+                                .addComponent(tfDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpPacienteLayout.createSequentialGroup()
+                        .addGroup(jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jpPacienteLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel27))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpPacienteLayout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(jLabel8)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpPacienteLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel9)))
                         .addGap(28, 28, 28)
-                        .addComponent(tfTel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpPacienteLayout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addComponent(jLabel9)
-                        .addGap(27, 27, 27)
-                        .addComponent(tfCel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpPacienteLayout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(jLabel3)
-                        .addGap(16, 16, 16)
-                        .addComponent(tfDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(256, Short.MAX_VALUE))
+                        .addGroup(jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfCel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfTel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbLugarConsultas, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(45, 45, 45)))
+                .addContainerGap(260, Short.MAX_VALUE))
         );
         jpPacienteLayout.setVerticalGroup(
             jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -584,10 +604,15 @@ public class principal extends javax.swing.JFrame {
                 .addGroup(jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(tfTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(18, 18, 18)
+                .addGroup(jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(tfCel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(tfCel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
+                .addGroup(jpPacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbLugarConsultas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Pacientes", jpPaciente);
@@ -624,7 +649,7 @@ public class principal extends javax.swing.JFrame {
 
         jLabel14.setText("Exámen Físico:");
 
-        jtExamen.setEditable(false);
+        jtExamenFisico.setEditable(false);
 
         jLabel15.setText("Estudios Solicitados:");
 
@@ -667,6 +692,8 @@ public class principal extends javax.swing.JFrame {
         jtAPP.setRows(5);
         jScrollPane13.setViewportView(jtAPP);
 
+        jLabel28.setText("Tratamiento:");
+
         javax.swing.GroupLayout panelFichaMedicaLayout = new javax.swing.GroupLayout(panelFichaMedica);
         panelFichaMedica.setLayout(panelFichaMedicaLayout);
         panelFichaMedicaLayout.setHorizontalGroup(
@@ -677,72 +704,70 @@ public class principal extends javax.swing.JFrame {
                     .addGroup(panelFichaMedicaLayout.createSequentialGroup()
                         .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(panelFichaMedicaLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jcTransfuciones)
-                                .addGap(10, 10, 10)
-                                .addComponent(cbTieneAlergia)
-                                .addGap(18, 18, 18)
-                                .addComponent(jtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(88, 88, 88))
+                                .addGap(0, 84, Short.MAX_VALUE)
+                                .addComponent(jLabel17)
+                                .addGap(430, 430, 430))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
-                                .addComponent(jLabel14)
-                                .addGap(18, 18, 18)
-                                .addComponent(jtExamen, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(panelFichaMedicaLayout.createSequentialGroup()
-                                    .addComponent(jLabel11)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
-                                    .addComponent(jLabel12)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jtMotivoconsulta))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
-                                    .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
-                                        .addComponent(jScrollPane13)))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
-                                    .addComponent(jLabel13)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jScrollPane11)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
-                                .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel23)
-                                    .addComponent(tfPA, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel16))
-                                .addGap(18, 18, 18)
-                                .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelFichaMedicaLayout.createSequentialGroup()
-                                        .addComponent(jScrollPane10)
-                                        .addGap(18, 18, 18))
-                                    .addGroup(panelFichaMedicaLayout.createSequentialGroup()
+                                .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
+                                        .addComponent(jLabel14)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jtExamenFisico, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(panelFichaMedicaLayout.createSequentialGroup()
+                                            .addComponent(jLabel11)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
+                                            .addComponent(jLabel12)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jtMotivoconsulta))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
+                                            .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGap(18, 18, 18)
+                                            .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                                                .addComponent(jScrollPane13)))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
+                                            .addComponent(jLabel13)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jScrollPane11)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelFichaMedicaLayout.createSequentialGroup()
                                         .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel24)
-                                            .addComponent(tfFC, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jLabel23)
+                                            .addComponent(tfPA, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel16)
+                                            .addComponent(jLabel15)
+                                            .addComponent(jLabel28))
                                         .addGap(18, 18, 18)
                                         .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel25)
-                                            .addComponent(tfSat, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel26)
-                                            .addComponent(tfTemp)))
-                                    .addGroup(panelFichaMedicaLayout.createSequentialGroup()
-                                        .addComponent(jtEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
+                                            .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE))
+                                            .addComponent(jtEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(panelFichaMedicaLayout.createSequentialGroup()
+                                                .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel24)
+                                                    .addComponent(tfFC, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel25)
+                                                    .addComponent(tfSat, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel26)
+                                                    .addComponent(tfTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(109, 109, 109))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFichaMedicaLayout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addGap(62, 62, 62)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(106, 106, 106))
                     .addGroup(panelFichaMedicaLayout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jcTransfuciones)
+                        .addGap(10, 10, 10)
+                        .addComponent(cbTieneAlergia)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelFichaMedicaLayout.setVerticalGroup(
             panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -760,7 +785,7 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(cbTieneAlergia)
                     .addComponent(jcTransfuciones)
                     .addComponent(jtAlergias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(8, 8, 8)
                 .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFichaMedicaLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
@@ -777,7 +802,7 @@ public class principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jtExamen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtExamenFisico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
@@ -796,12 +821,14 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(jtEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16))
-                .addGap(74, 74, 74)
+                    .addComponent(jLabel16)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelFichaMedicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel17)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel28))
+                .addGap(62, 62, 62)
+                .addComponent(jLabel17)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -847,7 +874,7 @@ public class principal extends javax.swing.JFrame {
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnAdd)
-                        .addGap(0, 50, Short.MAX_VALUE)))
+                        .addGap(0, 99, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPSeguimientoLayout.setVerticalGroup(
@@ -859,7 +886,7 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(jLabel18)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -906,7 +933,7 @@ public class principal extends javax.swing.JFrame {
                         .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnaddEstudios)
-                        .addGap(0, 49, Short.MAX_VALUE)))
+                        .addGap(0, 98, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jpEstudiosLayout.setVerticalGroup(
@@ -969,7 +996,7 @@ public class principal extends javax.swing.JFrame {
                             .addComponent(calendarfecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jcHora, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE))
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jpAgendaLayout.setVerticalGroup(
@@ -988,7 +1015,7 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(jcHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22))
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1013,7 +1040,7 @@ public class principal extends javax.swing.JFrame {
             jpUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpUsuariosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jpUsuariosLayout.setVerticalGroup(
@@ -1021,7 +1048,7 @@ public class principal extends javax.swing.JFrame {
             .addGroup(jpUsuariosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(154, Short.MAX_VALUE))
+                .addContainerGap(187, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Usuarios", jpUsuarios);
@@ -1099,8 +1126,8 @@ public class principal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 593, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnNuevo)
@@ -1412,6 +1439,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JButton btnaddEstudios;
     private com.toedter.calendar.JDateChooser calFechaNacimiento;
     private com.toedter.calendar.JDateChooser calendarfecha;
+    private javax.swing.JComboBox<String> cbLugarConsultas;
     private javax.swing.JCheckBox cbTieneAlergia;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -1433,6 +1461,8 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1458,6 +1488,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JComboBox jcHora;
     private javax.swing.JCheckBox jcTransfuciones;
     private javax.swing.JPanel jpAgenda;
@@ -1471,7 +1502,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JTextArea jtAntecedente;
     private javax.swing.JTextArea jtCirugias;
     private javax.swing.JTextField jtEstudios;
-    private javax.swing.JTextField jtExamen;
+    private javax.swing.JTextField jtExamenFisico;
     private javax.swing.JTextArea jtImpresion;
     private javax.swing.JTextField jtMotivoconsulta;
     private javax.swing.JTextField jtPaciente;
@@ -1685,6 +1716,7 @@ public class principal extends javax.swing.JFrame {
         tfEdad.setText(calcularEdad());
         tfTel.setText(paciente.getTel());
         tfCel.setText(paciente.getCel());
+        cbLugarConsultas.setSelectedItem(paciente.getLugarConsulta());
     }
 
     
@@ -1743,6 +1775,7 @@ public class principal extends javax.swing.JFrame {
         paciente.setFechanac(calFechaNacimiento.getDate());
         paciente.setTel(tfTel.getText());
         paciente.setCel(tfCel.getText());
+        paciente.setLugarConsulta(cbLugarConsultas.getSelectedItem().toString());
 
     }
 
@@ -1769,7 +1802,7 @@ public class principal extends javax.swing.JFrame {
             jtAntecedente.setEditable(estado);
             jtMotivoconsulta.setEditable(estado);
             jtAEA.setEditable(estado);
-            jtExamen.setEditable(estado);
+            jtExamenFisico.setEditable(estado);
             jtEstudios.setEditable(estado);
             jtTratamiento.setEditable(estado);
             jtImpresion.setEditable(estado);
