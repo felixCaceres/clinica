@@ -1329,6 +1329,10 @@ public class principal extends javax.swing.JFrame {
                     getSessionFactoryOptions().getServiceRegistry().
                     getService(ConnectionProvider.class).getConnection();
             //a partir de aqui tiene que ir los metodos del jasperreport
+            //Video tutorial
+            //https://www.youtube.com/watch?v=SvHWBFrLhPs
+            
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
