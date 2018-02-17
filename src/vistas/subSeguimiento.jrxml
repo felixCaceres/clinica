@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true" uuid="ddd60f27-9295-4d35-a36c-f9d121f5968a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pacienteId" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     seguimiento.`paciente_id` AS seguimiento_paciente_id,
+     seguimiento.`seguimiento` AS seguimiento_seguimiento
+FROM
+     `seguimiento` seguimiento
+WHERE seguimiento.`paciente_id` = $P{pacienteId}]]>
+	</queryString>
+	<field name="seguimiento_paciente_id" class="java.lang.Integer"/>
+	<field name="seguimiento_seguimiento" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="24eec3ca-0122-4d9c-b37e-554cef76c775"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Seguimientos]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="20" uuid="bd0909fe-267c-46f8-bcf2-c4b76befa500"/>
+				<textFieldExpression><![CDATA[$F{seguimiento_seguimiento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="1" splitType="Stretch"/>
+	</summary>
+</jasperReport>
