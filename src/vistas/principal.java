@@ -1379,10 +1379,13 @@ public class principal extends javax.swing.JFrame {
             params.put("pacienteId", paciente.getId());
             params.put("appDoctor", props.getProperty("app_doctor"));
             params.put("appVersion", props.getProperty("app_version"));
+            params.put("SUBREPORT_DIR", props.getProperty("ruta_reportes"));
             
-
+            
             URL in = this.getClass().getResource("pacientes.jasper");
             JasperReport pacientes = (JasperReport) JRLoader.loadObject(in);
+            System.out.println("Jasper "+pacientes.toString());
+            
             JasperPrint pacientesAMostrar = JasperFillManager.fillReport(pacientes, params, c);
             JasperViewer.viewReport(pacientesAMostrar, false);
 
