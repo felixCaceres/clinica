@@ -39,6 +39,12 @@ import modelo.FichaMedica;
 import modelo.Paciente;
 import modelo.Seguimiento;
 import modelo.Usuario;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import util.AppProperties;
 
@@ -1358,10 +1364,13 @@ public class principal extends javax.swing.JFrame {
             //a partir de aqui tiene que ir los metodos del jasperreport
             //Video tutorial
             //https://www.youtube.com/watch?v=SvHWBFrLhPs
-            
-            
+            JasperReport reportePacientes = JasperCompileManager.compileReport("D:\\marcelo\\documentos\\NetBeansProjects\\experimentos\\clinica\\src\\vistas\\report2.jrxml");
+            JasperPrint reporteAMostrar = JasperFillManager.fillReport(reportePacientes, null, c);
+            JasperViewer.viewReport(reporteAMostrar);
             
         } catch (SQLException ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -1580,7 +1589,7 @@ public class principal extends javax.swing.JFrame {
             acciones
              */
             if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Borrar.name())) {
-                if (selectedTab == TAB_PACIENTE) {
+                if (selectedTab == TAB_CONSULTA_PAC) {
                     if (modificar == null) {
                         return;
                     }
@@ -1628,6 +1637,11 @@ public class principal extends javax.swing.JFrame {
         if (ae.getActionCommand().equals(MenuTablaGeneral.MenuGeneral.Borrar.name())){
             int opt=showMensaje(AppProperties.TITLE_ALERT_BORRAR, AppProperties.MSG_ALERT_BORRAR);
             if (selectedTab == TAB_AGENDA && opt == AppProperties.OPCION_BORRRAR) {
+                System.out.println("Borrar Agenda:" +tblAgenda.getSelectedRow());
+                if (tblAgenda.getSelectedRow() < 0) {
+                    showMensaje(AppProperties.TITLE_ITEM_NOT_SELECTED, AppProperties.MSG_ITEM_NOT_SELECTED);
+                    return;
+                }
                 Object itemABorrar = tableModelAgenda.getItem(tblAgenda.getSelectedRow());
                 borrar(itemABorrar);
                 cargarTablaAgenda();
