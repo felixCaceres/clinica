@@ -402,7 +402,7 @@ public class principal extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnInforme = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -1094,10 +1094,10 @@ public class principal extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnInforme.setText("INFORME");
+        btnInforme.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnInformeActionPerformed(evt);
             }
         });
 
@@ -1126,7 +1126,7 @@ public class principal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnSalir)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnInforme)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -1140,7 +1140,7 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(btnEditar)
                     .addComponent(btnCancelar)
                     .addComponent(btnSalir)
-                    .addComponent(jButton1))
+                    .addComponent(btnInforme))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1354,7 +1354,7 @@ public class principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_calendarfechaPropertyChange
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInformeActionPerformed
         try {
             // TODO add your handling code here:
             
@@ -1365,6 +1365,7 @@ public class principal extends javax.swing.JFrame {
             //Video tutorial
             //https://www.youtube.com/watch?v=SvHWBFrLhPs
             JasperReport reportePacientes = JasperCompileManager.compileReport("D:\\marcelo\\documentos\\NetBeansProjects\\experimentos\\clinica\\src\\vistas\\report2.jrxml");
+//            JasperReport reportePacientes = JasperCompileManager.compileReport("c:\\clinica-reporte\\report2.jrxml");
             JasperPrint reporteAMostrar = JasperFillManager.fillReport(reportePacientes, null, c);
             JasperViewer.viewReport(reporteAMostrar);
             
@@ -1373,7 +1374,7 @@ public class principal extends javax.swing.JFrame {
         } catch (JRException ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnInformeActionPerformed
     /**
      * Busca un paciente en la tabla Pacientes, de acuerdo a lo que esta
      * seleccionado en la grilla si nada no esta seleccionado retorna null
@@ -1441,6 +1442,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JButton btnAgendar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnInforme;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSave;
@@ -1450,7 +1452,6 @@ public class principal extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser calendarfecha;
     private javax.swing.JComboBox<String> cbLugarConsultas;
     private javax.swing.JCheckBox cbTieneAlergia;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1589,7 +1590,11 @@ public class principal extends javax.swing.JFrame {
             acciones
              */
             if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Borrar.name())) {
-                if (selectedTab == TAB_CONSULTA_PAC) {
+                
+                    int opt=showMensaje(AppProperties.TITLE_ALERT_BORRAR, AppProperties.MSG_ALERT_BORRAR);
+                    if (opt == 1 ){
+                        return;
+                    }
                     if (modificar == null) {
                         return;
                     }
@@ -1607,11 +1612,11 @@ public class principal extends javax.swing.JFrame {
                         deleteAll(modificar.getEstudioses().iterator());
                     }
                     borrar(modificar);
-
                     //se borro todo entonces recargar la tabla
                     cargarDatosPacientes();
+                    return;
                 }
-            }
+            
         }
         
         
