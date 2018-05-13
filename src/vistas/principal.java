@@ -1624,7 +1624,11 @@ public class principal extends javax.swing.JFrame {
             acciones
              */
             if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Borrar.name())) {
-                if (selectedTab == TAB_PACIENTE) {
+                
+                    int opt=showMensaje(AppProperties.TITLE_ALERT_BORRAR, AppProperties.MSG_ALERT_BORRAR);
+                    if (opt == 1 ){
+                        return;
+                    }
                     if (modificar == null) {
                         return;
                     }
@@ -1642,11 +1646,11 @@ public class principal extends javax.swing.JFrame {
                         deleteAll(modificar.getEstudioses().iterator());
                     }
                     borrar(modificar);
-
                     //se borro todo entonces recargar la tabla
                     cargarDatosPacientes();
+                    return;
                 }
-            }
+            
         }
 
         //Los menu generales en las tablas
@@ -1671,6 +1675,11 @@ public class principal extends javax.swing.JFrame {
         if (ae.getActionCommand().equals(MenuTablaGeneral.MenuGeneral.Borrar.name())) {
             int opt = showMensaje(AppProperties.TITLE_ALERT_BORRAR, AppProperties.MSG_ALERT_BORRAR);
             if (selectedTab == TAB_AGENDA && opt == AppProperties.OPCION_BORRRAR) {
+                System.out.println("Borrar Agenda:" +tblAgenda.getSelectedRow());
+                if (tblAgenda.getSelectedRow() < 0) {
+                    showMensaje(AppProperties.TITLE_ITEM_NOT_SELECTED, AppProperties.MSG_ITEM_NOT_SELECTED);
+                    return;
+                }
                 Object itemABorrar = tableModelAgenda.getItem(tblAgenda.getSelectedRow());
                 borrar(itemABorrar);
                 cargarTablaAgenda();
