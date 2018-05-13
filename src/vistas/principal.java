@@ -1581,6 +1581,10 @@ public class principal extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
+        catch (NullPointerException npe){
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, npe);
+            showMensaje("Error", npe.getLocalizedMessage());
+        }
         cerrar();
     }
 
