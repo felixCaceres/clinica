@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1ab4288b-16ea-4eb1-b287-74e804f464f4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     paciente.`id` AS paciente_id,
+     paciente.`documento` AS paciente_documento,
+     paciente.`nombre` AS paciente_nombre,
+     paciente.`apellido` AS paciente_apellido,
+     paciente.`fechanac` AS paciente_fechanac,
+     paciente.`tel` AS paciente_tel,
+     paciente.`lugar_consulta` AS paciente_lugar_consulta,
+     paciente.`cel` AS paciente_cel,
+     ficha_medica.`idapp` AS ficha_medica_idapp,
+     ficha_medica.`paciente_id` AS ficha_medica_paciente_id,
+     ficha_medica.`app` AS ficha_medica_app,
+     ficha_medica.`cirugiaprevia` AS ficha_medica_cirugiaprevia,
+     ficha_medica.`transfucion` AS ficha_medica_transfucion,
+     ficha_medica.`alergias` AS ficha_medica_alergias,
+     ficha_medica.`descalergia` AS ficha_medica_descalergia,
+     ficha_medica.`antecefamiliar` AS ficha_medica_antecefamiliar,
+     ficha_medica.`motivoconsulta` AS ficha_medica_motivoconsulta,
+     ficha_medica.`antecenfernedad` AS ficha_medica_antecenfernedad,
+     ficha_medica.`examenfisico` AS ficha_medica_examenfisico,
+     ficha_medica.`efpa` AS ficha_medica_efpa,
+     ficha_medica.`efsat` AS ficha_medica_efsat,
+     ficha_medica.`effc` AS ficha_medica_effc,
+     ficha_medica.`eftemp` AS ficha_medica_eftemp,
+     ficha_medica.`estudiosolicitado` AS ficha_medica_estudiosolicitado,
+     ficha_medica.`imprediagnostico` AS ficha_medica_imprediagnostico,
+     ficha_medica.`tratamiento` AS ficha_medica_tratamiento,
+     paciente_A.`id` AS paciente_A_id,
+     paciente_A.`documento` AS paciente_A_documento,
+     paciente_A.`nombre` AS paciente_A_nombre,
+     paciente_A.`apellido` AS paciente_A_apellido,
+     paciente_A.`fechanac` AS paciente_A_fechanac,
+     paciente_A.`tel` AS paciente_A_tel,
+     paciente_A.`lugar_consulta` AS paciente_A_lugar_consulta,
+     paciente_A.`cel` AS paciente_A_cel,
+     seguimiento.`id` AS seguimiento_id,
+     seguimiento.`paciente_id` AS seguimiento_paciente_id,
+     seguimiento.`seguimiento` AS seguimiento_seguimiento
+FROM
+     `paciente` paciente INNER JOIN `ficha_medica` ficha_medica ON paciente.`id` = ficha_medica.`paciente_id`
+     INNER JOIN `paciente` paciente_A ON ficha_medica.`paciente_id` = paciente_A.`id`
+     INNER JOIN `seguimiento` seguimiento ON paciente.`id` = seguimiento.`paciente_id`]]>
+	</queryString>
+	<field name="paciente_id" class="java.lang.Integer"/>
+	<field name="paciente_documento" class="java.lang.Integer"/>
+	<field name="paciente_nombre" class="java.lang.String"/>
+	<field name="paciente_apellido" class="java.lang.String"/>
+	<field name="paciente_fechanac" class="java.sql.Date"/>
+	<field name="paciente_tel" class="java.lang.String"/>
+	<field name="paciente_lugar_consulta" class="java.lang.String"/>
+	<field name="paciente_cel" class="java.lang.String"/>
+	<field name="ficha_medica_idapp" class="java.lang.Integer"/>
+	<field name="ficha_medica_paciente_id" class="java.lang.Integer"/>
+	<field name="ficha_medica_app" class="java.lang.String"/>
+	<field name="ficha_medica_cirugiaprevia" class="java.lang.String"/>
+	<field name="ficha_medica_transfucion" class="java.lang.Boolean"/>
+	<field name="ficha_medica_alergias" class="java.lang.Boolean"/>
+	<field name="ficha_medica_descalergia" class="java.lang.String"/>
+	<field name="ficha_medica_antecefamiliar" class="java.lang.String"/>
+	<field name="ficha_medica_motivoconsulta" class="java.lang.String"/>
+	<field name="ficha_medica_antecenfernedad" class="java.lang.String"/>
+	<field name="ficha_medica_examenfisico" class="java.lang.String"/>
+	<field name="ficha_medica_efpa" class="java.lang.String"/>
+	<field name="ficha_medica_efsat" class="java.lang.String"/>
+	<field name="ficha_medica_effc" class="java.lang.String"/>
+	<field name="ficha_medica_eftemp" class="java.lang.String"/>
+	<field name="ficha_medica_estudiosolicitado" class="java.lang.String"/>
+	<field name="ficha_medica_imprediagnostico" class="java.lang.String"/>
+	<field name="ficha_medica_tratamiento" class="java.lang.String"/>
+	<field name="paciente_A_id" class="java.lang.Integer"/>
+	<field name="paciente_A_documento" class="java.lang.Integer"/>
+	<field name="paciente_A_nombre" class="java.lang.String"/>
+	<field name="paciente_A_apellido" class="java.lang.String"/>
+	<field name="paciente_A_fechanac" class="java.sql.Date"/>
+	<field name="paciente_A_tel" class="java.lang.String"/>
+	<field name="paciente_A_lugar_consulta" class="java.lang.String"/>
+	<field name="paciente_A_cel" class="java.lang.String"/>
+	<field name="seguimiento_id" class="java.lang.Integer"/>
+	<field name="seguimiento_paciente_id" class="java.lang.Integer"/>
+	<field name="seguimiento_seguimiento" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="67" y="30" width="100" height="20" uuid="29db5431-41f8-4120-bd78-6bb965b84cc5"/>
+				<text><![CDATA[Clinica]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="18" width="191" height="16" uuid="dc62a32f-6f29-4bc4-84f1-3f05afc637de"/>
+				<textFieldExpression><![CDATA[$F{paciente_nombre}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="82" width="100" height="1" uuid="90dd907d-36df-4cc7-8b36-ccaf8a58ed38"/>
+			</break>
+		</band>
+		<band height="50">
+			<break>
+				<reportElement x="0" y="0" width="555" height="1" uuid="4ccd0635-d270-4cae-ab28-86a7b31956fb"/>
+			</break>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -5,13 +5,14 @@
  */
 package vistas;
 
-
 import framework.EntityTableModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -22,8 +23,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -40,10 +43,10 @@ import modelo.Paciente;
 import modelo.Seguimiento;
 import modelo.Usuario;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import util.AppProperties;
@@ -69,7 +72,7 @@ public class principal extends javax.swing.JFrame {
     Integer TAB_ESTUDIOS = 4;
     Integer TAB_AGENDA = 5;
     Integer TAB_USUARIOS = 6;
-    
+
     //Listener para el menu
     ActionListener listenerMenu;
     EntityTableModel<Seguimiento> tableModelSeguimiento;
@@ -81,23 +84,18 @@ public class principal extends javax.swing.JFrame {
     //Elementos necesarios para la agenda
     Agenda agenda;
     List<Agenda> listaAgenda = new ArrayList<>();
-    EntityTableModel<Agenda> tableModelAgenda ;
+    EntityTableModel<Agenda> tableModelAgenda;
     List<String> horariosFiltrados;
     private SimpleDateFormat formatoHora = new SimpleDateFormat(AppProperties.FORMATO_HORA);
     private SimpleDateFormat formatoFecha = new SimpleDateFormat(AppProperties.FECHA_DEFAULT_FORMAT);
-    
+
     EntityManager em;
     List<Usuario> usuarioList;
     Usuario user;
-    
-    
-    
-    
-    
-    
-    
 
     private Paciente paciente;
+//    Propiedades de la app
+    private Properties props;
 
     /**
      * Creates new form principal
@@ -176,11 +174,10 @@ public class principal extends javax.swing.JFrame {
                 }
             }
 
-
         });
 
     }
-    
+
     private void cargarSeguimientos() {
         listaSeguimiento = em.createQuery("From Seguimiento s WHERE s.paciente = :p1", Seguimiento.class)
                 .setParameter("p1", paciente)
@@ -188,6 +185,7 @@ public class principal extends javax.swing.JFrame {
         tableModelSeguimiento.setRows(listaSeguimiento);
         tableModelSeguimiento.fireTableDataChanged();
     }
+
     private void cargarEstudios() {
         listaEstudios = em.createQuery("From Estudios e WHERE e.paciente = :p1", Estudios.class)
                 .setParameter("p1", paciente)
@@ -197,7 +195,7 @@ public class principal extends javax.swing.JFrame {
     }
 
     private void cargarVistaAFichaMedica() {
-        
+
         fichaMedica.setApp(jtAPP.getText());
         fichaMedica.setCirugiaprevia(jtCirugias.getText());
         fichaMedica.setTransfucion(jcTransfuciones.isSelected());
@@ -215,7 +213,7 @@ public class principal extends javax.swing.JFrame {
         fichaMedica.setImprediagnostico(jtImpresion.getText());
         fichaMedica.setTratamiento(jtTratamiento.getText());
         fichaMedica.setExamenfisico(jtExamenFisico.getText());
-        
+
     }
 
     /**
@@ -238,7 +236,7 @@ public class principal extends javax.swing.JFrame {
             //Esto no se lo que hace
             paciente.getEstudioses().add(fichaMedica);
         } else {
-            
+
             Iterator it = paciente.getFichaMedicas().iterator();
             while (it.hasNext()) {
                 System.out.println("While cargar fichaMedica");
@@ -247,38 +245,37 @@ public class principal extends javax.swing.JFrame {
                 //y salimos del bucle;
                 break;
             }
-            
 
         }
-        
-        jtAPP.setText                            (fichaMedica.getApp()) ;
-        jtCirugias.setText                        (fichaMedica.getCirugiaprevia());
-        jtAlergias.setText                       (fichaMedica.getDescalergia());
-        jtAntecedente.setText                    (fichaMedica.getAntecefamiliar());
-        jtMotivoconsulta.setText                 (fichaMedica.getMotivoconsulta()) ;
-        jtAEA.setText                            ( fichaMedica.getAntecenfernedad() ) ;
-        jtEstudios.setText                       (fichaMedica.getEstudiosolicitado());
-        jtImpresion.setText                      (fichaMedica.getImprediagnostico());
-        jtTratamiento.setText                    (fichaMedica.getTratamiento());
-        jtExamenFisico.setText                   (fichaMedica.getExamenfisico());
-        tfPA.setText                             (fichaMedica.getEfpa());
-        tfFC.setText                             (fichaMedica.getEffc());
-        tfSat.setText                            (fichaMedica.getEfsat());
-        tfTemp.setText                           (fichaMedica.getEftemp());
-        
+
+        jtAPP.setText(fichaMedica.getApp());
+        jtCirugias.setText(fichaMedica.getCirugiaprevia());
+        jtAlergias.setText(fichaMedica.getDescalergia());
+        jtAntecedente.setText(fichaMedica.getAntecefamiliar());
+        jtMotivoconsulta.setText(fichaMedica.getMotivoconsulta());
+        jtAEA.setText(fichaMedica.getAntecenfernedad());
+        jtEstudios.setText(fichaMedica.getEstudiosolicitado());
+        jtImpresion.setText(fichaMedica.getImprediagnostico());
+        jtTratamiento.setText(fichaMedica.getTratamiento());
+        jtExamenFisico.setText(fichaMedica.getExamenfisico());
+        tfPA.setText(fichaMedica.getEfpa());
+        tfFC.setText(fichaMedica.getEffc());
+        tfSat.setText(fichaMedica.getEfsat());
+        tfTemp.setText(fichaMedica.getEftemp());
+
         //Agregado por Marcelo
         //Es un problema los valores por defecto, ya que los campos asociados a 
         //algunas variables boolenas son del Tipo String entonces deben estar 
         //inicializado
         try {
-            
-            jcTransfuciones.setSelected             (fichaMedica.getTransfucion());
-            cbTieneAlergia.setSelected              (fichaMedica.getAlergias()) ;
-            
+
+            jcTransfuciones.setSelected(fichaMedica.getTransfucion());
+            cbTieneAlergia.setSelected(fichaMedica.getAlergias());
+
         } catch (Exception e) {
-            System.out.println("sucedio un error: "+ e.getMessage());
+            System.out.println("sucedio un error: " + e.getMessage());
         }
-        
+
         //Invalidar la vista para que re renderize
         jtAlergias.setVisible(cbTieneAlergia.isSelected());
         panelFichaMedica.revalidate();
@@ -289,12 +286,9 @@ public class principal extends javax.swing.JFrame {
     /**
      *
      */
-    
-
     private void cargarAgenda(Paciente pac) {
-        
-       
-        jtPaciente.setText(paciente.getNombre()+", "+paciente.getApellido());
+
+        jtPaciente.setText(paciente.getNombre() + ", " + paciente.getApellido());
         //Vamos a usar la libreria que combierte entre fechas
         //agenda.setHora();
     }
@@ -402,10 +396,11 @@ public class principal extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        btnInforme = new javax.swing.JButton();
+        btnImprimir = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        mAcercaDe = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -1094,10 +1089,10 @@ public class principal extends javax.swing.JFrame {
             }
         });
 
-        btnInforme.setText("INFORME");
-        btnInforme.addActionListener(new java.awt.event.ActionListener() {
+        btnImprimir.setText("Imprimir");
+        btnImprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInformeActionPerformed(evt);
+                btnImprimirActionPerformed(evt);
             }
         });
 
@@ -1105,6 +1100,15 @@ public class principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Utilidades");
+
+        mAcercaDe.setText("Acerca de");
+        mAcercaDe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mAcercaDeActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mAcercaDe);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -1126,7 +1130,7 @@ public class principal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnSalir)
                 .addGap(18, 18, 18)
-                .addComponent(btnInforme)
+                .addComponent(btnImprimir)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -1140,7 +1144,7 @@ public class principal extends javax.swing.JFrame {
                     .addComponent(btnEditar)
                     .addComponent(btnCancelar)
                     .addComponent(btnSalir)
-                    .addComponent(btnInforme))
+                    .addComponent(btnImprimir))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1157,7 +1161,7 @@ public class principal extends javax.swing.JFrame {
 
     private void calFechaNacimientoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_calFechaNacimientoFocusLost
         // TODO add your handling code here:
-        
+
         tfEdad.setText(calcularEdad());
     }//GEN-LAST:event_calFechaNacimientoFocusLost
 
@@ -1194,7 +1198,7 @@ public class principal extends javax.swing.JFrame {
             return;
         }
         paciente = getSelectedPaciente();
-        jtPaciente.setText(paciente.getApellido()+", "+paciente.getNombre());
+        jtPaciente.setText(paciente.getApellido() + ", " + paciente.getNombre());
         jTabbedPane1.setSelectedIndex(TAB_AGENDA);
     }//GEN-LAST:event_btnAgendarActionPerformed
 
@@ -1203,17 +1207,16 @@ public class principal extends javax.swing.JFrame {
         if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
             System.out.println("btnGuardarFichaMedica> ");
             if (paciente == null || paciente.getId() == null) {
-                showMensaje(AppProperties.TITLE_USER_NOT_SELECTED,AppProperties.MSG_USER_NOT_SELECTED);
+                showMensaje(AppProperties.TITLE_USER_NOT_SELECTED, AppProperties.MSG_USER_NOT_SELECTED);
                 return;
             }
             cargarVistaAFichaMedica();
-            
+
             guardar(fichaMedica);
-            
+
             //para que pueda cargar los datos             
             //Luego de guardar la ficha refrescamos la tabla
             cargarDatosPacientes();
-            
 
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
@@ -1227,25 +1230,23 @@ public class principal extends javax.swing.JFrame {
             cargarTablaAgenda();
 
         }
-        
+
         //Cuando es paciente y se preciona guardar no hace falta limpiar los 
         //campos
         if (jTabbedPane1.getSelectedIndex() == TAB_PACIENTE) {
             System.out.println("btnGuardarPACIENTE> ");
             cargarVistaAPaciente();
-            
+
             guardar(paciente);
             cargarDatosPacientes();
 
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
             System.out.println("btnGuardarSEGUIMIENTO> ");
-            
 
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
             System.out.println("btnGuardarESTUDIOS> ");
-            
 
         }
         limpiarCampos();
@@ -1258,7 +1259,6 @@ public class principal extends javax.swing.JFrame {
         habilitarCampos(true);
         if (jTabbedPane1.getSelectedIndex() == TAB_PACIENTE) {
             tfDocumento.requestFocus();
-          
 
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
@@ -1270,7 +1270,7 @@ public class principal extends javax.swing.JFrame {
         if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
             tfEstudiosAnexos.requestFocus();
         }
-        
+
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -1301,10 +1301,10 @@ public class principal extends javax.swing.JFrame {
 
     /**
      * Se debe cambiar el nombre de Este boton ya que solo agrega seguimientos
-     * Cuando se presiona este boton, se debe crear un nuevo seguimiento
-     * y guardar en la base de datos, el texto escrito por el usuario y la fecha
-     * 
-     * @param evt 
+     * Cuando se presiona este boton, se debe crear un nuevo seguimiento y
+     * guardar en la base de datos, el texto escrito por el usuario y la fecha
+     *
+     * @param evt
      */
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
@@ -1315,7 +1315,7 @@ public class principal extends javax.swing.JFrame {
         if (jtSeguimiento.getText().isEmpty()) {
             showMensaje(AppProperties.TITLE_SEGUIMIENTO_NO_SET, AppProperties.MSG_SEGUIMIENTO_NO_SET);
             return;
-        
+
         }
         cargarVistaASeguimiento();
         guardar(seguimiento);
@@ -1332,7 +1332,7 @@ public class principal extends javax.swing.JFrame {
         if (tfEstudiosAnexos.getText().isEmpty()) {
             showMensaje(AppProperties.TITLE_ESTUDIOSANEXOS_NO_SET, AppProperties.MSG_ESTUDIOSANEXOS_NO_SET);
             return;
-        
+
         }
         cargarVistaAEstudios();
         guardar(estudiosanexo);
@@ -1340,41 +1340,66 @@ public class principal extends javax.swing.JFrame {
         cargarEstudios();
         //
     }//GEN-LAST:event_btnaddEstudiosActionPerformed
-    
+
     /**
-     * Si en el calendar cambia de fecha refrescar la tabla con los datos de la 
+     * Si en el calendar cambia de fecha refrescar la tabla con los datos de la
      * bbdd
-     * @param evt 
+     *
+     * @param evt
      */
     private void calendarfechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarfechaPropertyChange
         // TODO add your handling code here:
-        System.out.println("calendarFecha: "+ evt.getPropertyName());
+        System.out.println("calendarFecha: " + evt.getPropertyName());
         if (evt.getPropertyName().equals(AppProperties.PROPIEDAD_FECHA)) {
             cargarTablaAgenda();
         }
     }//GEN-LAST:event_calendarfechaPropertyChange
 
-    private void btnInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInformeActionPerformed
+    private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
+
+        if (tablaPaciente.getSelectedRow() < 0) {
+            return;
+        }
+
+        paciente = getSelectedPaciente();
+
         try {
             // TODO add your handling code here:
-            
+
             Connection c = HibernateUtil.getSessionFactory().
                     getSessionFactoryOptions().getServiceRegistry().
                     getService(ConnectionProvider.class).getConnection();
             //a partir de aqui tiene que ir los metodos del jasperreport
             //Video tutorial
             //https://www.youtube.com/watch?v=SvHWBFrLhPs
-            JasperReport reportePacientes = JasperCompileManager.compileReport("D:\\marcelo\\documentos\\NetBeansProjects\\experimentos\\clinica\\src\\vistas\\report2.jrxml");
-//            JasperReport reportePacientes = JasperCompileManager.compileReport("c:\\clinica-reporte\\report2.jrxml");
-            JasperPrint reporteAMostrar = JasperFillManager.fillReport(reportePacientes, null, c);
-            JasperViewer.viewReport(reporteAMostrar);
+//            String dir = "C:\\Users\\marcelo\\Documents\\NetBeansProjects\\clinica\\src\\vistas\\pacientes.jrxml";
+//            JasperReport pacientes  = JasperCompileManager.compileReport(dir);
+            HashMap<String, Object> params = new HashMap<String, Object>();
+            //Para usar parametros externos
+            params.put("pacienteId", paciente.getId());
+            params.put("appDoctor", props.getProperty("app_doctor"));
+            params.put("appVersion", props.getProperty("app_version"));
+            params.put("SUBREPORT_DIR", props.getProperty("ruta_reportes"));
             
+            
+            URL in = this.getClass().getResource("pacientes.jasper");
+            JasperReport pacientes = (JasperReport) JRLoader.loadObject(in);
+            System.out.println("Jasper "+pacientes.toString());
+            
+            JasperPrint pacientesAMostrar = JasperFillManager.fillReport(pacientes, params, c);
+            JasperViewer.viewReport(pacientesAMostrar, false);
+
         } catch (SQLException ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JRException ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnInformeActionPerformed
+    }//GEN-LAST:event_btnImprimirActionPerformed
+
+    private void mAcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mAcercaDeActionPerformed
+        // TODO add your handling code here:
+        showMensaje(AppProperties.TITLE_ALERT_ACERCA_DE, AppProperties.MSG_ACERCA_DE);
+    }//GEN-LAST:event_mAcercaDeActionPerformed
     /**
      * Busca un paciente en la tabla Pacientes, de acuerdo a lo que esta
      * seleccionado en la grilla si nada no esta seleccionado retorna null
@@ -1435,14 +1460,13 @@ public class principal extends javax.swing.JFrame {
         });
     }
 
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAgendar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnInforme;
+    private javax.swing.JButton btnImprimir;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSave;
@@ -1518,6 +1542,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JTextField jtPaciente;
     private javax.swing.JTextArea jtSeguimiento;
     private javax.swing.JTextArea jtTratamiento;
+    private javax.swing.JMenuItem mAcercaDe;
     private javax.swing.JPanel panelFichaMedica;
     private javax.swing.JTable tablaPaciente;
     private javax.swing.JTable tablaUsuario;
@@ -1552,37 +1577,42 @@ public class principal extends javax.swing.JFrame {
                 ejecutarMenu(ae);
             }
 
-            
         };
+        props = new Properties();
+        try {
+            props.load(this.getClass().getResourceAsStream("app-clinica.properties"));
+        } catch (IOException ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         cerrar();
     }
-    
+
     //Para Implementar los menus de las tablas las acciones que queres que sucedan
     private void ejecutarMenu(ActionEvent ae) {
-        
+
         Paciente modificar = getSelectedPaciente();
         int selectedTab = jTabbedPane1.getSelectedIndex();
-        
-        if (selectedTab == TAB_CONSULTA_PAC){
-            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Nuevo.name())){
-            
+
+        if (selectedTab == TAB_CONSULTA_PAC) {
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Nuevo.name())) {
+
             }
-            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Editar.name())){
-            jTabbedPane1.setSelectedIndex(TAB_PACIENTE);
-            habilitarCampos(true);
-            }
-            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.FichaMedica.name())){
-            jTabbedPane1.setSelectedIndex(TAB_FICHA_MEDICA);
-            }
-            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Seguimiento.name())){
-            jTabbedPane1.setSelectedIndex(TAB_SEGUIMIENTO);
-            }
-            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Estudios.name())){
-            jTabbedPane1.setSelectedIndex(TAB_ESTUDIOS);
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Editar.name())) {
+                jTabbedPane1.setSelectedIndex(TAB_PACIENTE);
                 habilitarCampos(true);
             }
-            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Agendar.name())){
-            btnAgendarActionPerformed(ae);
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.FichaMedica.name())) {
+                jTabbedPane1.setSelectedIndex(TAB_FICHA_MEDICA);
+            }
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Seguimiento.name())) {
+                jTabbedPane1.setSelectedIndex(TAB_SEGUIMIENTO);
+            }
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Estudios.name())) {
+                jTabbedPane1.setSelectedIndex(TAB_ESTUDIOS);
+                habilitarCampos(true);
+            }
+            if (ae.getActionCommand().equals(MenuTablaPaciente.MenuPacientes.Agendar.name())) {
+                btnAgendarActionPerformed(ae);
             }
             /*
             Para borrar se necesita verificar si tiene relaciones en otras tablas
@@ -1618,29 +1648,28 @@ public class principal extends javax.swing.JFrame {
                 }
             
         }
-        
-        
+
         //Los menu generales en las tablas
-        if (ae.getActionCommand().equals(MenuTablaGeneral.MenuGeneral.Editar.name())){    
-            
+        if (ae.getActionCommand().equals(MenuTablaGeneral.MenuGeneral.Editar.name())) {
+
             if (selectedTab == TAB_AGENDA) {
                 agenda = tableModelAgenda.getItem(tblAgenda.getSelectedRow());
                 cargarAgendaAVista();
                 return;
             }
-            if (selectedTab == TAB_SEGUIMIENTO){
+            if (selectedTab == TAB_SEGUIMIENTO) {
                 seguimiento = tableModelSeguimiento.getItem(tblSeguimiento.getSelectedRow());
                 cargarSeguimientoAVistas();
                 return;
             }
-            if (selectedTab == TAB_ESTUDIOS){
+            if (selectedTab == TAB_ESTUDIOS) {
                 estudiosanexo = tableModelEstudios.getItem(tblEstudios.getSelectedRow());
                 cargarEstudiosAVistas();
                 return;
             }
         }
-        if (ae.getActionCommand().equals(MenuTablaGeneral.MenuGeneral.Borrar.name())){
-            int opt=showMensaje(AppProperties.TITLE_ALERT_BORRAR, AppProperties.MSG_ALERT_BORRAR);
+        if (ae.getActionCommand().equals(MenuTablaGeneral.MenuGeneral.Borrar.name())) {
+            int opt = showMensaje(AppProperties.TITLE_ALERT_BORRAR, AppProperties.MSG_ALERT_BORRAR);
             if (selectedTab == TAB_AGENDA && opt == AppProperties.OPCION_BORRRAR) {
                 System.out.println("Borrar Agenda:" +tblAgenda.getSelectedRow());
                 if (tblAgenda.getSelectedRow() < 0) {
@@ -1651,34 +1680,36 @@ public class principal extends javax.swing.JFrame {
                 borrar(itemABorrar);
                 cargarTablaAgenda();
             }
-            
-            
+
         }
     }
-    //Metodo para cuando se presiona el cosable del jframe
-    private void cerrar (){
-            try {
-                this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                addWindowListener( new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        super.windowClosing(e); //To change body of generated methods, choose Tools | Templates.
-                        confirmarSalida();
-                    }
-                    
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+    //Metodo para cuando se presiona el closable del jframe
+    private void cerrar() {
+        try {
+            this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    super.windowClosing(e); //To change body of generated methods, choose Tools | Templates.
+                    confirmarSalida();
+                }
+
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
     //confirmar salida
-    public void confirmarSalida(){
-        int valor = JOptionPane.showConfirmDialog(this, "¿Quiere Salir del Sistema?", "Advertencia",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
-        if(valor == JOptionPane.YES_OPTION){
+    public void confirmarSalida() {
+        int valor = JOptionPane.showConfirmDialog(this, "¿Quiere Salir del Sistema?", "Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (valor == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
-            
+
     }
+
     private void limpiarCampos() {
         if (jTabbedPane1.getSelectedIndex() == TAB_PACIENTE) {
             tfDocumento.setText("");
@@ -1721,7 +1752,7 @@ public class principal extends javax.swing.JFrame {
             estudiosanexo = new Estudios();
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
-            
+
         }
 
     }
@@ -1738,18 +1769,16 @@ public class principal extends javax.swing.JFrame {
         cbLugarConsultas.setSelectedItem(paciente.getLugarConsulta());
     }
 
-    
     /**
      * cargar datos pacientes a la grilla
-     * 
+     *
      * Falta mejorar este codigo, por ahora lo dejamos asi
      */
     List<Paciente> pacientesList;
-    
+
     /**
-     * Cargar la lista de pacientes para actualizar los datos de la tabla
-     * una vez realizada la consulta carga todos los datos a la tabla de 
-     * pacientes
+     * Cargar la lista de pacientes para actualizar los datos de la tabla una
+     * vez realizada la consulta carga todos los datos a la tabla de pacientes
      */
     private void cargarDatosPacientes() {
 
@@ -1790,7 +1819,7 @@ public class principal extends javax.swing.JFrame {
         paciente.setDocumento(doc);
         paciente.setNombre(tfNombre.getText());
         paciente.setApellido(tfApellido.getText());
-        
+
         paciente.setFechanac(calFechaNacimiento.getDate());
         paciente.setTel(tfTel.getText());
         paciente.setCel(tfCel.getText());
@@ -1813,8 +1842,8 @@ public class principal extends javax.swing.JFrame {
         /*
         *Primero habilitamos todos los que son textField
         *Luego todos los que son checkbox
-        */
-         if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
+         */
+        if (jTabbedPane1.getSelectedIndex() == TAB_FICHA_MEDICA) {
             jtAPP.setEditable(estado);
             jtCirugias.setEditable(estado);
             jtAlergias.setEditable(estado);
@@ -1825,7 +1854,7 @@ public class principal extends javax.swing.JFrame {
             jtEstudios.setEditable(estado);
             jtTratamiento.setEditable(estado);
             jtImpresion.setEditable(estado);
-            
+
             //Estaba mal, falta habilitar no setear el valor
             jcTransfuciones.setEnabled(estado);
             cbTieneAlergia.setEnabled(estado);
@@ -1833,36 +1862,33 @@ public class principal extends javax.swing.JFrame {
             tfFC.setEditable(estado);
             tfSat.setEditable(estado);
             tfTemp.setEditable(estado);
-         }
-         if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
+        }
+        if (jTabbedPane1.getSelectedIndex() == TAB_SEGUIMIENTO) {
             jtSeguimiento.setEditable(estado);
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_ESTUDIOS) {
             tfEstudiosAnexos.setEditable(estado);
         }
         if (jTabbedPane1.getSelectedIndex() == TAB_AGENDA) {
-            
-            
+
         }
     }
-    
+
     /**
      * Metodo para calcular la edad
      */
-    
-
     private String calcularEdad() {
-        
+
         LocalDate ahora = LocalDate.now();
-        LocalDate fechaSeleccionada ;
-        long edad  = 0;
+        LocalDate fechaSeleccionada;
+        long edad = 0;
         ZoneId zoneId = ZoneId.systemDefault();
         fechaSeleccionada = calFechaNacimiento.getCalendar().
                 toInstant().atZone(zoneId).toLocalDate();
-        
-        edad = ChronoUnit.YEARS.between(fechaSeleccionada , ahora);
+
+        edad = ChronoUnit.YEARS.between(fechaSeleccionada, ahora);
         return edad + " años";
-        
+
     }
 
     private int showMensaje(String titulo, String mensaje) {
@@ -1878,8 +1904,8 @@ public class principal extends javax.swing.JFrame {
                 options[0]);
         return n;
     }
-    
-    private void deleteAll(Iterator it){
+
+    private void deleteAll(Iterator it) {
         while (it.hasNext()) {
             em.getTransaction().begin();
             em.remove(it.next());
@@ -1888,31 +1914,29 @@ public class principal extends javax.swing.JFrame {
     }
 
     /**
-     * Se asignan los datos de la vista seguimiento al objeto seguimiento para 
+     * Se asignan los datos de la vista seguimiento al objeto seguimiento para
      * guardar dicho objeto
      */
     private void cargarVistaASeguimiento() {
-        
+
         //Un ejemplo interesante seria guardar la fecha del seguimiento
-        SimpleDateFormat  sdf = new SimpleDateFormat(AppProperties.FECHA_DEFAULT_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(AppProperties.FECHA_DEFAULT_FORMAT);
         Date fechaSeg = new Date();
         String fecha = sdf.format(fechaSeg);
         seguimiento.setPaciente(paciente);
-        seguimiento.setSeguimiento(fecha+": "+jtSeguimiento.getText());
+        seguimiento.setSeguimiento(fecha + ": " + jtSeguimiento.getText());
     }
-    
-   
-    
+
     private void cargarVistaAEstudios() {
-        
+
         //Un ejemplo interesante seria guardar la fecha del seguimiento
-        SimpleDateFormat  sdf = new SimpleDateFormat(AppProperties.FECHA_DEFAULT_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(AppProperties.FECHA_DEFAULT_FORMAT);
         Date fechaSeg = new Date();
         String fecha = sdf.format(fechaSeg);
         estudiosanexo.setPaciente(paciente);
-        estudiosanexo.setEstudios(fecha+": "+tfEstudiosAnexos.getText());
+        estudiosanexo.setEstudios(fecha + ": " + tfEstudiosAnexos.getText());
     }
-       
+
     /**
      * Metodo para guardar los datos
      */
@@ -1925,7 +1949,7 @@ public class principal extends javax.swing.JFrame {
     private void cargarVistaAgenda() {
         agenda.setEvento(jtPaciente.getText());
         agenda.setFecha(calendarfecha.getDate());
-        
+
         SimpleDateFormat formatoDeFecha = new SimpleDateFormat(AppProperties.FORMATO_HORA);
         Date horaSeleccionada;
         try {
@@ -1934,19 +1958,19 @@ public class principal extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     /**
      * En este metodo guardo los datos de las agendas libres y no libres para
      * una fecha X
-     * 
+     *
      */
     private void cargarTablaAgenda() {
         listaAgenda = getListaAgenda();
-        System.out.println("listaAgenda> "+listaAgenda.size());
+        System.out.println("listaAgenda> " + listaAgenda.size());
         List<Agenda> agendaDia = new ArrayList<>();
-        String [] horariosLibres = AppProperties.HORARIOS_LIBRES;
+        String[] horariosLibres = AppProperties.HORARIOS_LIBRES;
         String horaCombo;
         horariosFiltrados = new ArrayList<>();
         for (int i = 0; i < horariosLibres.length; i++) {
@@ -1971,8 +1995,7 @@ public class principal extends javax.swing.JFrame {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
+
         tableModelAgenda.setRows(agendaDia);
         jcHora.setModel(new DefaultComboBoxModel(
                 horariosFiltrados.toArray(new String[horariosFiltrados.size()]))
@@ -1980,22 +2003,22 @@ public class principal extends javax.swing.JFrame {
         tableModelAgenda.fireTableDataChanged();
         //cargar combo
     }
-    
+
     private List<Agenda> getListaAgenda() {
-        
+
         return em.createQuery("From Agenda a Where a.fecha = :p1 ORDER BY a.hora")
                 .setParameter("p1", calendarfecha.getDate())
                 .getResultList();
     }
 
     private void initTablas() {
-    tableModelSeguimiento = new EntityTableModel<>(Seguimiento.class , new ArrayList<>());
+        tableModelSeguimiento = new EntityTableModel<>(Seguimiento.class, new ArrayList<>());
         tableModelSeguimiento.addColumn("Id", "id");
         tableModelSeguimiento.addColumn("Seguimiento", "seguimiento");
         tblSeguimiento.setModel(tableModelSeguimiento);
         tblSeguimiento.setComponentPopupMenu(new MenuTablaGeneral(listenerMenu));
         tablaPaciente.setComponentPopupMenu(new MenuTablaPaciente(listenerMenu));
-        tableModelEstudios = new EntityTableModel<>(Estudios.class , new ArrayList<>());
+        tableModelEstudios = new EntityTableModel<>(Estudios.class, new ArrayList<>());
         tableModelEstudios.addColumn("Id", "id");
         tableModelEstudios.addColumn("Estudios", "estudios");
         tblEstudios.setModel(tableModelEstudios);
@@ -2014,12 +2037,11 @@ public class principal extends javax.swing.JFrame {
         em.remove(itemABorrar);
         em.getTransaction().commit();
     }
-    
+
     /**
-     * Para poder cargar un item agendado
-     * 1) Cargar el evento al jtEvento
-     * 2) Cargar la fecha del evento al calendar
-     * 3) Si la hora no esta en Item seleccionado cargar la hora en el combo
+     * Para poder cargar un item agendado 1) Cargar el evento al jtEvento 2)
+     * Cargar la fecha del evento al calendar 3) Si la hora no esta en Item
+     * seleccionado cargar la hora en el combo
      */
     private void cargarAgendaAVista() {
         jtPaciente.setText(agenda.getEvento());
@@ -2035,8 +2057,7 @@ public class principal extends javax.swing.JFrame {
 
     private void cargarSeguimientoAVistas() {
         jtSeguimiento.setText(seguimiento.getSeguimiento());
-        
-        
+
     }
 
     private void cargarEstudiosAVistas() {

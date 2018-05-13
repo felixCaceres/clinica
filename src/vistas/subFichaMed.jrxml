@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="52cf39fa-cbf1-488e-8e7f-8f28cd8148b4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pacienteId" class="java.lang.Integer"/>
+	<parameter name="otros" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     ficha_medica.`idapp` AS ficha_medica_idapp,
+     ficha_medica.`paciente_id` AS ficha_medica_paciente_id,
+     ficha_medica.`app` AS ficha_medica_app,
+     ficha_medica.`cirugiaprevia` AS ficha_medica_cirugiaprevia,
+     ficha_medica.`transfucion` AS ficha_medica_transfucion,
+     ficha_medica.`alergias` AS ficha_medica_alergias,
+     ficha_medica.`descalergia` AS ficha_medica_descalergia,
+     ficha_medica.`antecefamiliar` AS ficha_medica_antecefamiliar,
+     ficha_medica.`motivoconsulta` AS ficha_medica_motivoconsulta,
+     ficha_medica.`antecenfernedad` AS ficha_medica_antecenfernedad,
+     ficha_medica.`examenfisico` AS ficha_medica_examenfisico,
+     ficha_medica.`efpa` AS ficha_medica_efpa,
+     ficha_medica.`efsat` AS ficha_medica_efsat,
+     ficha_medica.`effc` AS ficha_medica_effc,
+     ficha_medica.`eftemp` AS ficha_medica_eftemp,
+     ficha_medica.`estudiosolicitado` AS ficha_medica_estudiosolicitado,
+     ficha_medica.`imprediagnostico` AS ficha_medica_imprediagnostico,
+     ficha_medica.`tratamiento` AS ficha_medica_tratamiento
+FROM
+     `ficha_medica` ficha_medica
+WHERE ficha_medica.`paciente_id` = $P{pacienteId}]]>
+	</queryString>
+	<field name="ficha_medica_idapp" class="java.lang.Integer"/>
+	<field name="ficha_medica_paciente_id" class="java.lang.Integer"/>
+	<field name="ficha_medica_app" class="java.lang.String"/>
+	<field name="ficha_medica_cirugiaprevia" class="java.lang.String"/>
+	<field name="ficha_medica_transfucion" class="java.lang.Boolean"/>
+	<field name="ficha_medica_alergias" class="java.lang.Boolean"/>
+	<field name="ficha_medica_descalergia" class="java.lang.String"/>
+	<field name="ficha_medica_antecefamiliar" class="java.lang.String"/>
+	<field name="ficha_medica_motivoconsulta" class="java.lang.String"/>
+	<field name="ficha_medica_antecenfernedad" class="java.lang.String"/>
+	<field name="ficha_medica_examenfisico" class="java.lang.String"/>
+	<field name="ficha_medica_efpa" class="java.lang.String"/>
+	<field name="ficha_medica_efsat" class="java.lang.String"/>
+	<field name="ficha_medica_effc" class="java.lang.String"/>
+	<field name="ficha_medica_eftemp" class="java.lang.String"/>
+	<field name="ficha_medica_estudiosolicitado" class="java.lang.String"/>
+	<field name="ficha_medica_imprediagnostico" class="java.lang.String"/>
+	<field name="ficha_medica_tratamiento" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="249" height="18" forecolor="#000000" uuid="869316c0-af71-45df-94e4-a58d3d94aa20"/>
+				<textElement>
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ficha Medica]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="410" splitType="Stretch">
+			<textField>
+				<reportElement x="102" y="0" width="180" height="20" uuid="27785608-13bf-4d19-9465-8427db9a7ab8"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_alergias}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="102" y="22" width="180" height="20" uuid="f6ebb75a-9a82-443a-928c-50fc8f45996a"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_descalergia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="22" y="22" width="72" height="20" uuid="ae5e368f-2972-4502-988a-c1cfc5b9d1e2"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Descr. Alergias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="0" width="83" height="20" uuid="8d608ffd-2cab-4a4d-91c1-deca86a96e05"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Tiene Alergias?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="58" y="42" width="36" height="20" uuid="fd17f423-8ddf-43f3-8f0d-8936f0ce0f37"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[A.P.P]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="103" y="42" width="180" height="20" uuid="32746c00-ce40-4b6a-b5aa-57d2eccddb1f"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_app}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="62" width="92" height="20" uuid="49f60ae1-2bae-42b2-8340-3a3eab215919"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Cirugias Previas:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="103" y="62" width="180" height="20" uuid="4c76cf71-c39c-487b-a735-6a49fc2ec090"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_cirugiaprevia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="294" y="2" width="75" height="40" uuid="8d45ea71-abd0-481c-8fd2-dfb43e811337"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Tiene Transfusiones?:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="374" y="2" width="100" height="20" uuid="05996935-c538-476b-affe-be58ff537988"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_transfucion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="102" y="86" width="180" height="58" uuid="ce93e54b-c13f-4d3d-8bd0-39089dcb5a20"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_antecefamiliar}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="82" width="83" height="40" uuid="ee5beaf0-6ed9-4d12-af0c-702390fbbc19"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Antecedentes Familiar: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="103" y="148" width="180" height="20" uuid="e60c1176-1d72-4ecd-8678-45d65702114f"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_motivoconsulta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="148" width="91" height="20" uuid="aa7304b6-7d80-4278-95cd-1584bd80851f"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Motivo Consulta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="103" y="170" width="180" height="70" uuid="7326de09-9d9f-4c57-b01e-698b46f0f45f"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_antecenfernedad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="170" width="91" height="33" uuid="e38d2577-49a1-45c7-bd07-0a71cf345e89"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Antecedentes Enfermedades:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="374" y="42" width="180" height="117" uuid="ed609c79-ebf5-4526-92e5-2e4aee0d3852"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_examenfisico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="311" y="42" width="58" height="61" uuid="c8a713f5-5bee-423a-a9a3-115185dcc52d"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Examen Fisico:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="41" y="243" width="62" height="20" uuid="fa4745e6-08ed-4c8f-aba1-0e49d2e0503c"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_efpa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="243" width="35" height="20" uuid="ff3a0abe-d7d8-40d1-b46c-6a5830d98438"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[E.F.PA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="289" y="243" width="59" height="20" uuid="dc7a0ae2-f063-4742-a784-b22fb1d5af98"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_efsat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="240" y="243" width="43" height="20" uuid="18007a1b-92b5-465e-9cf6-4858bd80873b"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[E.F.SAT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="107" y="243" width="44" height="20" uuid="e2ce28b5-dc0a-4286-80b7-e0493067636e"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[E.F.FC:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="154" y="242" width="86" height="21" uuid="4717000f-6e0b-41a4-a7a1-f2cda9ff074b"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_effc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="352" y="243" width="52" height="20" uuid="1fbfa977-fba8-44d2-8245-3c4cd1f9cd1f"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[E.F.TEMP:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="405" y="243" width="103" height="20" uuid="82a3d1f6-7ed6-4da5-ac04-c09dc50f2f24"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_eftemp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="267" width="89" height="45" uuid="f7177739-8bfc-4ac2-9211-52d8e6063982"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Estudio solicitado:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="102" y="267" width="180" height="56" uuid="a49222fc-38fa-47df-b3a3-4bc85543ccbe"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_estudiosolicitado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="294" y="267" width="69" height="31" uuid="b74cfeb8-1890-4dd9-8067-728801ad5af2"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Impresión Diagnostico:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="374" y="267" width="177" height="49" uuid="2cda2c4e-f6c3-4d1a-8fa4-a8ff8fefe63a"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_imprediagnostico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="218" y="327" width="100" height="20" uuid="2c10a4a2-0920-4639-a71f-e7a79eaea633"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tratamiento]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="76" y="350" width="432" height="56" uuid="472bb69d-ba9f-4ad5-9b57-b98f1b7c3d62"/>
+				<textFieldExpression><![CDATA[$F{ficha_medica_tratamiento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

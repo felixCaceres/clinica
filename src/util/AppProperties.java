@@ -24,6 +24,8 @@ public class AppProperties {
     public static String MSG_ESTUDIOSANEXOS_NO_SET = "Ingrese un Estudio por favor" ;
     
     public static String TITLE_ALERT_BORRAR = "Borrar Realmente?" ;
+    public static String TITLE_ALERT_ACERCA_DE = "Acerca de Esta App" ;
+    public static String MSG_ACERCA_DE = "Esta App Fue Desarrollada por:\n Marcelo Flores mail: marcelo6297@gmail.com\n Felix Cáceres mail: flx1980@hotmail.com" ;
     public static String MSG_ALERT_BORRAR = "Desea Borrar Realmente?" ;
     
     public static String[] HORARIOS_LIBRES = new String[]{"08:00", "09:00", "10:00", "11:00",
