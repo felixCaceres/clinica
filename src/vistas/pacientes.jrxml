@@ -17,7 +17,7 @@
 	<parameter name="appDoctor" class="java.lang.String"/>
 	<parameter name="appVersion" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\marcelo\\Documents\\NetBeansProjects\\clinica\\src\\vistas\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\\Users\\marcelo\\Documents\\NetBeansProjects\\clinica\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
 		<![CDATA[SELECT

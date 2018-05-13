@@ -43,6 +43,7 @@ import modelo.Paciente;
 import modelo.Seguimiento;
 import modelo.Usuario;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -1372,17 +1373,19 @@ public class principal extends javax.swing.JFrame {
             //a partir de aqui tiene que ir los metodos del jasperreport
             //Video tutorial
             //https://www.youtube.com/watch?v=SvHWBFrLhPs
-//            String dir = "C:\\Users\\marcelo\\Documents\\NetBeansProjects\\clinica\\src\\vistas\\pacientes.jrxml";
-//            JasperReport pacientes  = JasperCompileManager.compileReport(dir);
             HashMap<String, Object> params = new HashMap<String, Object>();
+            String subReportDir = "C:\\clinica-reportes\\";
             //Para usar parametros externos
             params.put("pacienteId", paciente.getId());
             params.put("appDoctor", props.getProperty("app_doctor"));
             params.put("appVersion", props.getProperty("app_version"));
+            params.put("SUBREPORT_DIR", subReportDir);
             
 
-            URL in = this.getClass().getResource("pacientes.jasper");
-            JasperReport pacientes = (JasperReport) JRLoader.loadObject(in);
+//            URL in = this.getClass().getResource("pacientes.jasper");
+//            JasperReport pacientes = (JasperReport) JRLoader.loadObject(in);
+//            Compilando el reporte principal
+            JasperReport pacientes  = JasperCompileManager.compileReport(subReportDir+"pacientes.jrxml");
             JasperPrint pacientesAMostrar = JasperFillManager.fillReport(pacientes, params, c);
             JasperViewer.viewReport(pacientesAMostrar, false);
 
