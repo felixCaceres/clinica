@@ -133,7 +133,7 @@ WHERE ficha_medica.`paciente_id` = $P{pacienteId}]]>
 				<text><![CDATA[Motivo Consulta:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="103" y="170" width="180" height="70" uuid="7326de09-9d9f-4c57-b01e-698b46f0f45f"/>
+				<reportElement x="103" y="170" width="405" height="70" uuid="7326de09-9d9f-4c57-b01e-698b46f0f45f"/>
 				<textFieldExpression><![CDATA[$F{ficha_medica_antecenfernedad}]]></textFieldExpression>
 			</textField>
 			<staticText>

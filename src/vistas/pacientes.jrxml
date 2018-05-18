@@ -55,10 +55,6 @@ WHERE paciente.`id` = $P{pacienteId}]]>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{paciente_lugar_consulta}]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement style="SubTitle" x="296" y="70" width="254" height="25" uuid="f5b04eec-6e61-4693-849f-c50b1a421bfa"/>
-					<textFieldExpression><![CDATA[$P{appDoctor}]]></textFieldExpression>
-				</textField>
 			</frame>
 			<frame>
 				<reportElement mode="Opaque" x="0" y="100" width="552" height="32" forecolor="#000000" backcolor="#CC0000" uuid="21f6b7d6-bfea-41db-a707-93c355dfc9e4"/>
@@ -79,11 +75,10 @@ WHERE paciente.`id` = $P{pacienteId}]]>
 		<band height="78" splitType="Stretch">
 			<textField>
 				<reportElement x="105" y="4" width="154" height="20" uuid="44483120-552d-43fe-803e-e379e77f08df"/>
-				<textFieldExpression><![CDATA[$F{paciente_nombre} + $F{paciente_apellido}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{paciente_nombre}  + - +  $F{paciente_apellido}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="2" y="4" width="100" height="20" uuid="08d3b2d1-2e04-4e93-95c5-5b6f3ae76aee"/>
-				<textElement textAlignment="Right"/>
 				<text><![CDATA[Paciente:]]></text>
 			</staticText>
 			<textField>
@@ -92,7 +87,6 @@ WHERE paciente.`id` = $P{pacienteId}]]>
 			</textField>
 			<staticText>
 				<reportElement x="2" y="28" width="100" height="20" uuid="b803d447-54a3-4360-b12d-4dd3518da231"/>
-				<textElement textAlignment="Right"/>
 				<text><![CDATA[Documento:]]></text>
 			</staticText>
 			<textField>
@@ -101,7 +95,6 @@ WHERE paciente.`id` = $P{pacienteId}]]>
 			</textField>
 			<staticText>
 				<reportElement x="2" y="51" width="100" height="20" uuid="19d57d2f-96d1-4dd2-97a0-fd03773a186a"/>
-				<textElement textAlignment="Right"/>
 				<text><![CDATA[Telefono:]]></text>
 			</staticText>
 			<textField>
@@ -110,7 +103,6 @@ WHERE paciente.`id` = $P{pacienteId}]]>
 			</textField>
 			<staticText>
 				<reportElement x="275" y="4" width="100" height="20" uuid="ec4045a5-7816-4114-bd3f-4ae8a1275c84"/>
-				<textElement textAlignment="Right"/>
 				<text><![CDATA[Celular:]]></text>
 			</staticText>
 			<textField pattern="EEEEE dd MMMMM yyyy">
@@ -119,7 +111,6 @@ WHERE paciente.`id` = $P{pacienteId}]]>
 			</textField>
 			<staticText>
 				<reportElement x="275" y="28" width="100" height="20" uuid="67507894-d127-4853-8abd-6b63f62e6bfd"/>
-				<textElement textAlignment="Right"/>
 				<text><![CDATA[Fecha Nacimiento:]]></text>
 			</staticText>
 			<textField>
@@ -128,7 +119,6 @@ WHERE paciente.`id` = $P{pacienteId}]]>
 			</textField>
 			<staticText>
 				<reportElement x="275" y="51" width="100" height="20" uuid="7035164c-fff6-4540-abc2-badb8ee598bc"/>
-				<textElement textAlignment="Right"/>
 				<text><![CDATA[Lugar Consulta:]]></text>
 			</staticText>
 		</band>
